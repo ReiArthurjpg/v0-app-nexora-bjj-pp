@@ -28,6 +28,9 @@ export function NexoraHero() {
             <a href="#precos" className="hover:text-white transition-colors">
               Preços
             </a>
+            <a href="/login" className="text-gray-400 hover:text-white transition-colors">
+              Login
+            </a>
             <button className="bg-white text-black hover:bg-[#E11D48] hover:text-white px-6 py-2 rounded font-black transition-all">
               Criar minha conta
             </button>

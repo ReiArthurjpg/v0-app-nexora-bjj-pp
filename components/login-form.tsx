@@ -1,10 +1,21 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Zap, Mail, Lock, Eye, EyeOff, ChevronRight } from 'lucide-react';
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    router.push('/hub');
+  };
+
+  const handleGoogleLogin = () => {
+    router.push('/hub');
+  };
 
   return (
     <div className="w-full lg:w-[45%] flex flex-col relative z-10 bg-[#070708] border-r border-white/5">
@@ -42,7 +53,7 @@ export function LoginForm() {
             </div>
           </div>
 
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleLogin}>
             <div className="space-y-2">
               <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">E-mail</label>
               <div className="relative group">
@@ -91,7 +102,7 @@ export function LoginForm() {
 
           <div className="mt-8 text-center">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600">Ou continuar com</p>
-            <button className="w-full mt-4 bg-transparent border border-white/10 hover:bg-white/5 py-4 rounded flex items-center justify-center gap-3 transition-all">
+            <button type="button" onClick={handleGoogleLogin} className="w-full mt-4 bg-transparent border border-white/10 hover:bg-white/5 py-4 rounded flex items-center justify-center gap-3 transition-all">
               <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" className="w-5 h-5" alt="Google" />
               <span className="text-xs font-black uppercase tracking-widest text-gray-300">Google Account</span>
             </button>

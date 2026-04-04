@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
   Users, 
   Layers, 
@@ -32,6 +33,7 @@ import {
 } from 'lucide-react';
 
 export function NexoraHub() {
+  const router = useRouter();
   const [currentModule, setCurrentModule] = useState('dashboard');
   const [lastAccessedModule, setLastAccessedModule] = useState('alunos');
   const [currentTournamentSlide, setCurrentTournamentSlide] = useState(0);
@@ -202,7 +204,7 @@ export function NexoraHub() {
 
               {/* GRUPO DE BOTÕES DE AÇÃO */}
               <div className="flex flex-col gap-3 min-w-[240px]">
-                <button className="flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-4 rounded-2xl hover:bg-[#E11D48] hover:border-[#E11D48] transition-all group active:scale-95 shadow-lg w-full">
+                <button onClick={() => router.push('/profile')} className="flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-4 rounded-2xl hover:bg-[#E11D48] hover:border-[#E11D48] transition-all group active:scale-95 shadow-lg w-full">
                   <User size={18} className="text-[#E11D48] group-hover:text-white transition-colors" />
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] italic text-white">Perfil do Diretor</span>
                 </button>

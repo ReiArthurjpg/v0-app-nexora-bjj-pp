@@ -375,7 +375,12 @@ export function NexoraHub() {
                   </p>
                   <div className="flex gap-3 mt-auto">
                     <button 
-                      onClick={() => handleModuleAccess(mod.id)}
+                      onClick={() => {
+                        handleModuleAccess(mod.id);
+                        if (mod.id === 'alunos') {
+                          router.push('/alunos');
+                        }
+                      }}
                       className="flex-1 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all italic border shadow-sm bg-white text-black hover:bg-[#E11D48] hover:text-white border-white/10 hover:border-[#E11D48] active:scale-95"
                     >
                       {mod.status === 'Ativo' ? 'Gerenciar' : 'Configurar'}

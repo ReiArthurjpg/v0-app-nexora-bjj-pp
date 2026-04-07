@@ -581,6 +581,7 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
                          <History size={16} className="text-[#E11D48]" />
                          <span className="text-[10px] font-black uppercase italic tracking-[0.3em] text-gray-400">Histórico de Movimentações</span>
                       </div>
+                      
                       <div className="grid grid-cols-1 gap-4">
                         {salesHistory.map((sale) => (
                           <div key={sale.id} className="bg-[#070708] hover:bg-white/[0.03] border border-white/5 rounded-[2rem] p-5 flex items-center justify-between group transition-all cursor-pointer">
@@ -600,6 +601,7 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
                                 </div>
                               </div>
                             </div>
+
                             <div className="text-right flex items-center gap-8">
                                <div>
                                   <p className="text-[8px] font-bold text-gray-600 uppercase tracking-widest mb-1 italic">Total Pago</p>
@@ -613,10 +615,31 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
                         ))}
                       </div>
                    </div>
+
                    <div className="space-y-6">
+                      <div className="flex items-center gap-3 mb-6">
+                         <TrendingUp size={16} className="text-[#E11D48]" />
+                         <span className="text-[10px] font-black uppercase italic tracking-[0.3em] text-gray-400">Sumário VIP</span>
+                      </div>
+
                       <div className="bg-gradient-to-br from-[#E11D48] to-[#991B1B] rounded-[2.5rem] p-8 shadow-[0_20px_40px_rgba(225,29,72,0.15)] relative overflow-hidden group">
+                         <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-150 transition-all duration-1000">
+                            <ShoppingCart size={80} />
+                         </div>
                          <p className="text-[9px] font-black uppercase italic tracking-widest text-white/60 mb-2">Total Consumido</p>
                          <h3 className="text-4xl font-black italic tracking-tighter text-white mb-6">R$ 792,40</h3>
+                         <div className="h-1 w-12 bg-white rounded-full mb-6"></div>
+                         <p className="text-[10px] font-bold italic text-white/80 leading-relaxed uppercase tracking-tighter">Guerreiro recorrente em suplementação e equipamentos de elite.</p>
+                      </div>
+
+                      <div className="bg-[#070708] border border-white/5 rounded-[2.5rem] p-8">
+                         <h4 className="text-[10px] font-black uppercase italic tracking-widest text-[#E11D48] mb-6">Sugestão Técnica</h4>
+                         <div className="flex gap-4 items-start">
+                            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-orange-500 shrink-0">
+                               <Award size={16} />
+                            </div>
+                            <p className="text-[9px] font-bold text-gray-400 uppercase italic leading-relaxed tracking-wider">Baseado no histórico, este atleta pode se interessar pelo novo pré-treino Nexora Fire.</p>
+                         </div>
                       </div>
                    </div>
                 </div>

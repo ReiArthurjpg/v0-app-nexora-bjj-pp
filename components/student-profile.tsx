@@ -625,12 +625,90 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
 
             {/* ESTADO VAZIO PARA EDITAR */}
             {activeTab === 'Editar' && (
-              <div className="flex flex-col items-center justify-center py-32 animate-in zoom-in-95 duration-500">
-                <div className="w-20 h-20 bg-[#E11D48]/5 rounded-full flex items-center justify-center mb-6 text-[#E11D48]/20 ring-4 ring-[#E11D48]/5">
-                  <Edit3 size={40} />
+              <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-10">
+                {/* SEÇÃO: DADOS PESSOAIS */}
+                <div className="bg-[#070708] border border-white/5 rounded-[2.5rem] p-8">
+                  <div className="flex items-center gap-4 mb-8">
+                    <User size={18} className="text-[#E11D48]" />
+                    <h4 className="text-[11px] font-black uppercase italic tracking-[0.4em] text-[#E11D48]">Dados Pessoais</h4>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest ml-1 italic">Nome Completo</label>
+                      <input type="text" defaultValue={student.name} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-[11px] font-black italic focus:border-[#E11D48]/50 outline-none transition-all" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest ml-1 italic">Email Corporativo</label>
+                      <input type="email" defaultValue={student.email} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-[11px] font-black italic focus:border-[#E11D48]/50 outline-none transition-all" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest ml-1 italic">Telefone</label>
+                      <input type="text" defaultValue={student.phone} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-[11px] font-black italic focus:border-[#E11D48]/50 outline-none transition-all" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest ml-1 italic">Telefone Emergência</label>
+                      <div className="relative">
+                        <input type="text" defaultValue={student.emergencyPhone} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-[11px] font-black italic focus:border-[#E11D48]/50 outline-none transition-all pr-12" />
+                        <ShieldAlert size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-orange-500/50" />
+                      </div>
+                    </div>
+                    <div className="lg:col-span-2 space-y-2">
+                      <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest ml-1 italic">Endereço Residencial</label>
+                      <div className="relative">
+                        <input type="text" defaultValue={student.address} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-[11px] font-black italic focus:border-[#E11D48]/50 outline-none transition-all pr-12" />
+                        <MapPin size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-base font-black uppercase italic tracking-[0.3em] text-white/40 mb-2">Módulo: Editar</h3>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-gray-600 italic">Em desenvolvimento...</p>
+
+                {/* SEÇÃO: DADOS DE GUERREIRO */}
+                <div className="bg-[#070708] border border-white/5 rounded-[2.5rem] p-8">
+                  <div className="flex items-center gap-4 mb-8">
+                    <GraduationCap size={18} className="text-[#E11D48]" />
+                    <h4 className="text-[11px] font-black uppercase italic tracking-[0.4em] text-[#E11D48]">Dados de Guerreiro</h4>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest ml-1 italic">Graduação (Faixa)</label>
+                      <select className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-[11px] font-black italic focus:border-[#E11D48]/50 outline-none transition-all appearance-none cursor-pointer">
+                        <option className="bg-[#070708]">Branca</option>
+                        <option className="bg-[#070708]">Azul</option>
+                        <option className="bg-[#070708]">Roxa</option>
+                        <option className="bg-[#070708]">Marrom</option>
+                        <option className="bg-[#070708]">Preta</option>
+                      </select>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest ml-1 italic">Nível (Grau)</label>
+                      <select defaultValue={student.degree} className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-[11px] font-black italic focus:border-[#E11D48]/50 outline-none transition-all appearance-none cursor-pointer">
+                        <option className="bg-[#070708]">0 Graus</option>
+                        <option className="bg-[#070708]">1 Grau</option>
+                        <option className="bg-[#070708]">2 Graus</option>
+                        <option className="bg-[#070708]">3 Graus</option>
+                        <option className="bg-[#070708]" value="4">4 Graus</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                {/* SEÇÃO: ANOTAÇÕES DO MESTRE */}
+                <div className="bg-[#070708] border border-white/5 rounded-[3rem] p-8 shadow-xl">
+                  <div className="flex items-center gap-4 mb-6">
+                    <Edit3 size={18} className="text-[#E11D48]" />
+                    <h4 className="text-[11px] font-black uppercase italic tracking-[0.4em] text-[#E11D48]">Anotações do Mestre</h4>
+                  </div>
+                  <textarea 
+                    className="w-full h-40 bg-black/40 border border-white/5 rounded-[2rem] p-8 text-[11px] text-gray-300 font-medium italic focus:outline-none focus:border-[#E11D48]/30 transition-all resize-none mb-6 placeholder:text-gray-700"
+                    placeholder="Documente aqui a evolução técnica e observações de conduta deste guerreiro..."
+                  ></textarea>
+                  <div className="flex justify-end">
+                    <button className="flex items-center gap-4 px-10 py-4 bg-[#E11D48] text-white text-[11px] font-black uppercase italic tracking-[0.2em] rounded-2xl shadow-[0_15px_30px_rgba(225,29,72,0.3)] hover:scale-105 active:scale-95 transition-all">
+                      <Save size={16} />
+                      Atualizar Cadastro
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

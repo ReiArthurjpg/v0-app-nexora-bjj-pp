@@ -385,7 +385,7 @@ export function AlunosManagement() {
                     </div>
                   </div>
 
-                  <button className="w-full py-3 bg-white/5 border border-white/10 hover:bg-[#E11D48] hover:border-[#E11D48] rounded-2xl text-[9px] font-black uppercase tracking-widest italic transition-all">
+                  <button onClick={() => router.push(`/alunos/${student.id}`)} className="w-full py-3 bg-white/5 border border-white/10 hover:bg-[#E11D48] hover:border-[#E11D48] rounded-2xl text-[9px] font-black uppercase tracking-widest italic transition-all">
                     Ver Perfil
                   </button>
                 </div>
@@ -451,7 +451,7 @@ export function AlunosManagement() {
                   </div>
 
                   <div className="flex items-center gap-4 pl-8">
-                    <button className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/5 rounded-xl hover:bg-[#E11D48] hover:border-[#E11D48] transition-all group/btn">
+                    <button onClick={() => router.push(`/alunos/${student.id}`)} className="flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/5 rounded-xl hover:bg-[#E11D48] hover:border-[#E11D48] transition-all group/btn">
                       <span className="text-[9px] font-black uppercase tracking-widest italic">Perfil</span>
                       <ExternalLink size={14} className="text-gray-500 group-hover/btn:text-white" />
                     </button>

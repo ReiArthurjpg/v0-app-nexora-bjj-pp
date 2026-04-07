@@ -502,11 +502,14 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
             {activeTab === 'Contratos' && (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  
+                  {/* DETALHE DO CONTRATO ESCOLHIDO */}
                   <div className="lg:col-span-2 space-y-6">
                     <div className="bg-[#070708] border border-white/5 rounded-[3rem] p-8 shadow-xl relative overflow-hidden group">
                        <div className="absolute top-0 right-0 p-10 opacity-[0.03] group-hover:scale-110 transition-transform duration-700">
                           <FileCheck size={180} />
                        </div>
+
                        <div className="flex justify-between items-start mb-10">
                           <div>
                              <span className="bg-[#E11D48]/10 text-[#E11D48] text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-[0.2em] mb-4 inline-block border border-[#E11D48]/20">Plano Atual</span>
@@ -520,6 +523,7 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
                              <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest italic">Início: {currentContract.startDate}</p>
                           </div>
                        </div>
+
                        <div className="grid grid-cols-2 gap-8 mb-12">
                           <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6">
                              <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest mb-2 italic">Valor Total</p>
@@ -530,6 +534,7 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
                              <p className="text-2xl font-black italic tracking-tighter">{currentContract.installments}</p>
                           </div>
                        </div>
+
                        <div className="space-y-4 mb-10">
                           <h4 className="text-[10px] font-black uppercase italic tracking-[0.3em] text-[#E11D48]">Benefícios Inclusos</h4>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -541,6 +546,7 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
                              ))}
                           </div>
                        </div>
+
                        <div className="flex gap-4">
                           <button className="flex-1 py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-[10px] font-black uppercase italic tracking-[0.2em] transition-all flex items-center justify-center gap-3">
                              <Download size={16} />
@@ -553,21 +559,47 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
                        </div>
                     </div>
                   </div>
+
+                  {/* TIMELINE E STATUS */}
                   <div className="space-y-6">
                     <div className="bg-[#070708] border border-white/5 rounded-[2.5rem] p-8">
                        <div className="flex items-center gap-3 mb-8 text-[#E11D48]">
                           <Clock size={18} />
                           <h4 className="text-[11px] font-black uppercase italic tracking-[0.3em]">Vigência do Plano</h4>
                        </div>
+
                        <div className="relative h-2 bg-white/5 rounded-full mb-4 overflow-hidden">
                           <div className="absolute top-0 left-0 h-full w-[35%] bg-gradient-to-r from-[#E11D48] to-[#FF4D7D] shadow-[0_0_10px_rgba(225,29,72,0.5)]"></div>
                        </div>
+
                        <div className="flex justify-between items-center mb-10">
                           <span className="text-[9px] font-black text-gray-500 uppercase italic">Dia 60 / 365</span>
                           <span className="text-[9px] font-black text-[#E11D48] uppercase italic">Expira em 10 meses</span>
                        </div>
+
+                       <div className="space-y-4">
+                          <div className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-[#E11D48]/30 transition-all">
+                             <div>
+                                <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest italic">Data Final</p>
+                                <p className="text-[11px] font-black italic tracking-tighter uppercase">{currentContract.endDate}</p>
+                             </div>
+                             <ArrowRight size={14} className="text-gray-700 group-hover:text-white transition-all" />
+                          </div>
+                       </div>
+                    </div>
+
+                    <div className="bg-[#070708] border border-white/5 rounded-[2.5rem] p-8 text-center">
+                        <Award size={32} className="mx-auto text-yellow-500/50 mb-4" />
+                        <h4 className="text-[10px] font-black uppercase italic tracking-widest text-white mb-2">Renovação Antecipada</h4>
+                        <p className="text-[9px] font-bold text-gray-500 uppercase italic tracking-widest leading-relaxed mb-6">
+                           Renove agora e ganhe 10% de cashback no clube de recompensas.
+                        </p>
+                        <button className="w-full py-3 bg-[#E11D48]/10 text-[#E11D48] text-[9px] font-black uppercase italic tracking-widest rounded-xl border border-[#E11D48]/20 hover:bg-[#E11D48] hover:text-white transition-all">
+                           Falar com Mestre
+                        </button>
                     </div>
                   </div>
+
                 </div>
               </div>
             )}
@@ -581,7 +613,6 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
                          <History size={16} className="text-[#E11D48]" />
                          <span className="text-[10px] font-black uppercase italic tracking-[0.3em] text-gray-400">Histórico de Movimentações</span>
                       </div>
-                      
                       <div className="grid grid-cols-1 gap-4">
                         {salesHistory.map((sale) => (
                           <div key={sale.id} className="bg-[#070708] hover:bg-white/[0.03] border border-white/5 rounded-[2rem] p-5 flex items-center justify-between group transition-all cursor-pointer">
@@ -601,7 +632,6 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
                                 </div>
                               </div>
                             </div>
-
                             <div className="text-right flex items-center gap-8">
                                <div>
                                   <p className="text-[8px] font-bold text-gray-600 uppercase tracking-widest mb-1 italic">Total Pago</p>
@@ -615,31 +645,10 @@ export function StudentProfile({ studentId }: StudentProfileProps) {
                         ))}
                       </div>
                    </div>
-
                    <div className="space-y-6">
-                      <div className="flex items-center gap-3 mb-6">
-                         <TrendingUp size={16} className="text-[#E11D48]" />
-                         <span className="text-[10px] font-black uppercase italic tracking-[0.3em] text-gray-400">Sumário VIP</span>
-                      </div>
-
                       <div className="bg-gradient-to-br from-[#E11D48] to-[#991B1B] rounded-[2.5rem] p-8 shadow-[0_20px_40px_rgba(225,29,72,0.15)] relative overflow-hidden group">
-                         <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-150 transition-all duration-1000">
-                            <ShoppingCart size={80} />
-                         </div>
                          <p className="text-[9px] font-black uppercase italic tracking-widest text-white/60 mb-2">Total Consumido</p>
                          <h3 className="text-4xl font-black italic tracking-tighter text-white mb-6">R$ 792,40</h3>
-                         <div className="h-1 w-12 bg-white rounded-full mb-6"></div>
-                         <p className="text-[10px] font-bold italic text-white/80 leading-relaxed uppercase tracking-tighter">Guerreiro recorrente em suplementação e equipamentos de elite.</p>
-                      </div>
-
-                      <div className="bg-[#070708] border border-white/5 rounded-[2.5rem] p-8">
-                         <h4 className="text-[10px] font-black uppercase italic tracking-widest text-[#E11D48] mb-6">Sugestão Técnica</h4>
-                         <div className="flex gap-4 items-start">
-                            <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-orange-500 shrink-0">
-                               <Award size={16} />
-                            </div>
-                            <p className="text-[9px] font-bold text-gray-400 uppercase italic leading-relaxed tracking-wider">Baseado no histórico, este atleta pode se interessar pelo novo pré-treino Nexora Fire.</p>
-                         </div>
                       </div>
                    </div>
                 </div>

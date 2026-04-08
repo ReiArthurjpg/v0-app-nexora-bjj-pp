@@ -379,6 +379,8 @@ export function NexoraHub() {
                         handleModuleAccess(mod.id);
                         if (mod.id === 'alunos') {
                           router.push('/alunos');
+                        } else if (mod.id === 'professores') {
+                          router.push('/professores');
                         }
                       }}
                       className="flex-1 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all italic border shadow-sm bg-white text-black hover:bg-[#E11D48] hover:text-white border-white/10 hover:border-[#E11D48] active:scale-95"

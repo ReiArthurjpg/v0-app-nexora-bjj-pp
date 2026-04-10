@@ -16,12 +16,12 @@ export function BenefitCard({ icon, title, description }: { icon: React.ReactNod
 
 export function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="group p-8 bg-white/5 border border-white/5 rounded-lg hover:border-[#E11D48]/50 transition-all duration-300">
-      <div className="w-12 h-12 bg-[#E11D48] text-white rounded flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+    <div className="group p-8 bg-white/5 border border-white/5 rounded-2xl hover:border-[#E11D48]/50 hover:bg-white/10 transition-all duration-500 flex flex-col items-center text-center">
+      <div className="w-14 h-14 bg-[#E11D48] text-white rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-lg shadow-[#E11D48]/20">
         {icon}
       </div>
       <h4 className="text-2xl font-black uppercase italic tracking-tighter mb-4 text-white">{title}</h4>
-      <p className="text-gray-500 text-sm leading-relaxed">{description}</p>
+      <p className="text-gray-400 text-sm leading-relaxed max-w-xs">{description}</p>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import { Users, QrCode, Trophy, LayoutDashboard } from 'lucide-react'
 import { MVPBlock } from '@/feature/guest/site/components/nexora-cards'
 
@@ -47,12 +48,18 @@ export function MVPSection() {
   return (
     <section
       id="mvp"
-      className="py-32 px-6 bg-[#0F0F11] border-y border-white/5"
+      className="py-32 px-6 bg-[#0F0F11] border-y border-white/5 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-3 gap-16">
           {/* LADO ESQUERDO (FIXO) */}
-          <div className="lg:col-span-1">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-1"
+          >
             <h2 className="text-5xl font-black uppercase italic tracking-tighter leading-none mb-6 text-white">
               Controle <br />
               do <span className="text-[#E11D48]">Tatame.</span>
@@ -62,10 +69,10 @@ export function MVPSection() {
               Desenvolvemos o Nexora para resolver a desorganização que impede sua academia de crescer. Gestão focada no que o mestre precisa.
             </p>
 
-            <button className="bg-[#E11D48] text-white px-8 py-4 rounded font-black uppercase italic tracking-tighter hover:bg-white hover:text-black transition-colors">
+            <button className="bg-[#E11D48] text-white px-8 py-4 rounded font-black uppercase italic tracking-tighter hover:bg-white hover:text-black transition-all duration-300">
               Experimentar Grátis
             </button>
-          </div>
+          </motion.div>
 
           {/* LADO DIREITO (DINÂMICO) */}
           <div className="lg:col-span-2 grid md:grid-cols-2 gap-6">
@@ -73,12 +80,19 @@ export function MVPSection() {
               const Icon = block.icon
 
               return (
-                <MVPBlock
+                <motion.div
                   key={index}
-                  icon={<Icon />}
-                  title={block.title}
-                  items={block.items}
-                />
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <MVPBlock
+                    icon={<Icon size={20} />}
+                    title={block.title}
+                    items={block.items}
+                  />
+                </motion.div>
               )
             })}
           </div>

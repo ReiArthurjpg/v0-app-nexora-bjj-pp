@@ -1,6 +1,6 @@
 'use client'
 
-import { PriceCard } from '@/components/nexora-cards'
+import { PriceCard } from '@/feature/guest/site/components/nexora-cards'
 
 const plans = [
   {

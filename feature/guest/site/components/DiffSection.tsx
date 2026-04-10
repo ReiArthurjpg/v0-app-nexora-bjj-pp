@@ -1,6 +1,6 @@
 'use client'
 
-import { DiffItem } from '@/components/nexora-cards'
+import { DiffItem } from '@/feature/guest/site/components/nexora-cards'
 
 const differentials = [
   'Feito 100% para Jiu-Jitsu e NoGi',

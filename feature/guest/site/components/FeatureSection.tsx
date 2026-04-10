@@ -9,7 +9,7 @@ import {
   Medal,
   MessageSquare,
 } from 'lucide-react'
-import { FeatureCard } from '@/components/nexora-cards'
+import { FeatureCard } from '@/feature/guest/site/components/nexora-cards'
 
 const features = [
   {

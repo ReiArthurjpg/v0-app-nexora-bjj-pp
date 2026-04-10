@@ -1,7 +1,7 @@
 'use client'
 
 import { Users, QrCode, Trophy, LayoutDashboard } from 'lucide-react'
-import { MVPBlock } from '@/components/nexora-cards'
+import { MVPBlock } from '@/feature/guest/site/components/nexora-cards'
 
 const mvpBlocks = [
   {

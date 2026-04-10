@@ -1,7 +1,8 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import { UserPlus, LogIn, Sparkles } from 'lucide-react'
-import { StepCard } from '@/components/nexora-cards'
+import { StepCard } from '@/feature/guest/site/components/nexora-cards'
 
 const steps = [
   {
@@ -29,28 +30,42 @@ const steps = [
 
 export function StepsSection() {
   return (
-    <section className="py-32 px-6 bg-gradient-to-b from-transparent to-[#0F0F11]">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter mb-4 text-white">
-            Use em menos de <span className="text-[#E11D48]">5 minutos.</span>
+    <section className="py-32 px-6 bg-gradient-to-b from-transparent to-[#0F0F11] relative overflow-hidden">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-24"
+        >
+          <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter mb-6 text-white leading-tight">
+            Use em menos de <br />
+            <span className="text-[#E11D48]">5 minutos.</span>
           </h2>
 
           <div className="w-24 h-1.5 bg-[#E11D48] mx-auto -skew-x-12" />
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((item) => {
+          {steps.map((item, index) => {
             const Icon = item.icon
 
             return (
-              <StepCard
+              <motion.div
                 key={item.number}
-                number={item.number}
-                icon={<Icon size={32} />}
-                title={item.title}
-                description={item.description}
-              />
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <StepCard
+                  number={item.number}
+                  icon={<Icon size={32} />}
+                  title={item.title}
+                  description={item.description}
+                />
+              </motion.div>
             )
           })}
         </div>

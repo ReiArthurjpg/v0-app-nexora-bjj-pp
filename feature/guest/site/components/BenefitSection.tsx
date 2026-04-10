@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { TrendingUp, ShieldCheck, Clock, HeartPulse } from 'lucide-react'
-import { BenefitCard } from '@/components/nexora-cards'
+import { BenefitCard } from '@/feature/guest/site/components/nexora-cards'
 
 const benefits = [
   {

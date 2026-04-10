@@ -34,41 +34,37 @@ export function BenefitSection() {
   return (
     <section
       id="beneficios"
-      className="py-32 px-6 bg-white text-black relative"
+      className="py-32 px-6 bg-white text-black relative overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row justify-between items-end mb-20 gap-8">
-          <div className="max-w-2xl">
-            <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter leading-[0.9] mb-6">
+      {/* Background Decoration */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-5">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-[#E11D48] rounded-full blur-[120px] -translate-y-1/2" />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="flex flex-col items-center text-center mb-24 gap-8">
+          <div className="max-w-3xl">
+            <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter leading-[0.9] mb-8">
               Menos tempo no PC, <br />
               <span className="text-[#E11D48]">
                 Mais tempo no Tatame.
               </span>
             </h2>
 
-            <p className="text-xl text-gray-600 font-medium">
+            <p className="text-xl text-gray-600 font-medium mx-auto max-w-2xl">
               Desenvolvemos o Nexora para que você foque na técnica dos seus alunos enquanto o sistema cuida do resto.
-            </p>
-          </div>
-
-          <div className="bg-[#070708] text-white p-6 rounded-lg -skew-x-6 hidden lg:block shadow-2xl">
-            <p className="text-xs font-black uppercase tracking-[0.2em]">
-              Resultado Médio
-            </p>
-            <p className="text-3xl font-black italic">
-              +30% faturamento
             </p>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {benefits.map((item, index) => {
             const Icon = item.icon
 
             return (
               <BenefitCard
                 key={index}
-                icon={<Icon size={40} />}
+                icon={<Icon size={32} />}
                 title={item.title}
                 description={item.description}
               />

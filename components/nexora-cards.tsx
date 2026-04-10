@@ -4,10 +4,12 @@ import { CheckCircle2 } from 'lucide-react'
 
 export function BenefitCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="border-l-4 border-[#E11D48] pl-8 py-4 space-y-4 group">
-      <div className="text-[#E11D48] group-hover:scale-110 transition-transform duration-300 inline-block">{icon}</div>
-      <h3 className="text-2xl font-black uppercase italic tracking-tighter text-[#070708]">{title}</h3>
-      <p className="text-gray-600 font-medium leading-relaxed max-w-md">{description}</p>
+    <div className="flex flex-col items-center text-center p-8 rounded-2xl bg-gray-50/50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 group">
+      <div className="w-16 h-16 bg-[#E11D48]/5 text-[#E11D48] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#E11D48] group-hover:text-white transition-all duration-500">
+        {icon}
+      </div>
+      <h3 className="text-2xl font-black uppercase italic tracking-tighter text-[#070708] mb-4">{title}</h3>
+      <p className="text-gray-600 font-medium leading-relaxed line-clamp-3">{description}</p>
     </div>
   )
 }

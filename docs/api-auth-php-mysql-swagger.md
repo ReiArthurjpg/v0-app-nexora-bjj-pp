@@ -95,7 +95,7 @@ CREATE TABLE password_resets (
 
 ## 3) Endpoints da API (para login/signup/forgot-password)
 
-Base URL sugerida: `https://api.seudominio.com/v1`
+Base URL sugerida: `Veja qual é a melhor porta para colocar a API`
 
 ### 3.1 Auth
 

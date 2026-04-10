@@ -1,0 +1,1 @@
+export { default as Lpcontroller } from './controller/Lpcontroller'

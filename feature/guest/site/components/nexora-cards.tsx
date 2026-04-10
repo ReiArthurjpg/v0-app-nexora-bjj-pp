@@ -4,29 +4,31 @@ import { CheckCircle2 } from 'lucide-react'
 
 export function BenefitCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="border-l-4 border-[#E11D48] pl-8 py-4 space-y-4 group">
-      <div className="text-[#E11D48] group-hover:scale-110 transition-transform duration-300 inline-block">{icon}</div>
-      <h3 className="text-2xl font-black uppercase italic tracking-tighter text-[#070708]">{title}</h3>
-      <p className="text-gray-600 font-medium leading-relaxed max-w-md">{description}</p>
+    <div className="flex cursor-pointer flex-col items-center text-center p-8 rounded-2xl bg-gray-50/50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 group">
+      <div className="w-16 h-16 bg-[#E11D48]/5 text-[#E11D48] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#E11D48] group-hover:text-white transition-all duration-500">
+        {icon}
+      </div>
+      <h3 className="text-2xl font-black uppercase italic tracking-tighter text-[#070708] mb-4">{title}</h3>
+      <p className="text-gray-600 font-medium leading-relaxed line-clamp-3">{description}</p>
     </div>
   )
 }
 
 export function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="group p-8 bg-white/5 border border-white/5 rounded-lg hover:border-[#E11D48]/50 transition-all duration-300">
-      <div className="w-12 h-12 bg-[#E11D48] text-white rounded flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+    <div className="cursor-pointer group p-8 bg-white/5 border border-white/5 rounded-2xl hover:border-[#E11D48]/50 hover:bg-white/10 transition-all duration-500 flex flex-col items-center text-center">
+      <div className="w-14 h-14 bg-[#E11D48] text-white rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-lg shadow-[#E11D48]/20">
         {icon}
       </div>
       <h4 className="text-2xl font-black uppercase italic tracking-tighter mb-4 text-white">{title}</h4>
-      <p className="text-gray-500 text-sm leading-relaxed">{description}</p>
+      <p className="text-gray-400 text-sm leading-relaxed max-w-xs">{description}</p>
     </div>
   )
 }
 
 export function StepCard({ number, icon, title, description }: { number: string; icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="relative p-10 bg-[#0F0F11] border border-white/5 rounded-xl group hover:border-[#E11D48]/50 transition-all duration-500 overflow-hidden">
+    <div className="cursor-pointer relative p-10 bg-[#0F0F11] border border-white/5 rounded-xl group hover:border-[#E11D48]/50 transition-all duration-500 overflow-hidden">
       <div className="absolute -top-10 -right-10 text-[180px] font-black italic text-white/5 select-none pointer-events-none group-hover:text-[#E11D48]/10 transition-colors">
         {number}
       </div>
@@ -70,7 +72,7 @@ export function PriceCard({ tier, price, description, features, featured = false
           </li>
         ))}
       </ul>
-      <button className={`w-full py-4 rounded font-black text-sm uppercase italic tracking-tighter transition-all ${featured ? 'bg-[#E11D48] text-white hover:bg-black shadow-lg shadow-[#E11D48]/20' : 'bg-white/5 text-white hover:bg-white hover:text-black border border-white/10'}`}>
+      <button className={`w-full cursor-pointer py-4 rounded font-black text-sm uppercase italic tracking-tighter transition-all ${featured ? 'bg-[#E11D48] text-white hover:bg-black shadow-lg shadow-[#E11D48]/20' : 'bg-white/5 text-white hover:bg-white hover:text-black border border-white/10'}`}>
         Selecionar Plano
       </button>
     </div>
@@ -79,7 +81,7 @@ export function PriceCard({ tier, price, description, features, featured = false
 
 export function MVPBlock({ icon, title, items }: { icon: React.ReactNode; title: string; items: string[] }) {
   return (
-    <div className="p-6 border border-white/10 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
+    <div className="cursor-pointer p-6 border border-white/10 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
       <div className="flex items-center gap-3 mb-4 text-[#E11D48]">
         {icon}
         <h5 className="font-black uppercase italic tracking-tight text-white">{title}</h5>

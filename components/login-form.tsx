@@ -110,7 +110,7 @@ export function LoginForm() {
 
           <div className="mt-8 text-center">
             <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-              Não tem uma conta? <button className="text-white hover:text-[#E11D48] ml-1">Criar conta</button>
+              Não tem uma conta? <button onClick={() => router.push('/signup')} className="text-white hover:text-[#E11D48] ml-1">Criar conta</button>
             </p>
           </div>
         </div>

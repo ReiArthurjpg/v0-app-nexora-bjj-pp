@@ -162,7 +162,6 @@ npm start
 
 - [Documentação do Next.js](https://nextjs.org/docs) — Funcionalidades e API do Next.js
 - [Aprenda Next.js](https://nextjs.org/learn) — Tutorial interativo
-- [Documentação do v0](https://v0.app/docs) — Sobre o v0
 
 ---
 

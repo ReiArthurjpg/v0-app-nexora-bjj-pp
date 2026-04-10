@@ -92,7 +92,7 @@ export function LoginForm() {
                 <input type="checkbox" className="w-4 h-4 bg-white/5 border-white/10 rounded accent-[#E11D48]" />
                 <span className="text-gray-500 group-hover:text-white transition-colors">Lembrar de mim</span>
               </label>
-              <button type="button" className="text-[#E11D48] hover:underline italic">Esqueceu sua senha?</button>
+              <button type="button" onClick={() => router.push('/forgot-password')} className="text-[#E11D48] hover:underline italic">Esqueceu sua senha?</button>
             </div>
 
             <button className="w-full bg-[#E11D48] hover:bg-white hover:text-black py-5 rounded font-black text-lg uppercase italic tracking-tighter transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#E11D48]/10 group">

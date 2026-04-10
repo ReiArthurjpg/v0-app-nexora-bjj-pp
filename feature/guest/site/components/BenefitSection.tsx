@@ -1,5 +1,6 @@
 'use client'
 
+import { motion } from 'framer-motion'
 import { TrendingUp, ShieldCheck, Clock, HeartPulse } from 'lucide-react'
 import { BenefitCard } from '@/components/nexora-cards'
 
@@ -42,7 +43,13 @@ export function BenefitSection() {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col items-center text-center mb-24 gap-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center text-center mb-24 gap-8"
+        >
           <div className="max-w-3xl">
             <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter leading-[0.9] mb-8">
               Menos tempo no PC, <br />
@@ -55,19 +62,26 @@ export function BenefitSection() {
               Desenvolvemos o Nexora para que você foque na técnica dos seus alunos enquanto o sistema cuida do resto.
             </p>
           </div>
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
           {benefits.map((item, index) => {
             const Icon = item.icon
 
             return (
-              <BenefitCard
+              <motion.div
                 key={index}
-                icon={<Icon size={32} />}
-                title={item.title}
-                description={item.description}
-              />
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <BenefitCard
+                  icon={<Icon size={32} />}
+                  title={item.title}
+                  description={item.description}
+                />
+              </motion.div>
             )
           })}
         </div>

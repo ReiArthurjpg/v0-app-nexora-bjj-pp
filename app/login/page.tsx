@@ -1,6 +1,6 @@
 import { LoginForm } from '@/feature/guest/login/signin/components/login-form';
 import { TestimonialsCarousel } from '@/components/testimonials-carousel';
-import { MetricBox } from '@/components/metrics-box';
+import { MetricBox } from '@/feature/guest/login/shared/components';
 import { Users, Activity, Trophy } from 'lucide-react';
 
 export default function LoginPage() {

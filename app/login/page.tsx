@@ -1,4 +1,4 @@
-import { LoginForm } from '@/components/login-form';
+import { LoginForm } from '@/feature/guest/login/signin/components/login-form';
 import { TestimonialsCarousel } from '@/components/testimonials-carousel';
 import { MetricBox } from '@/components/metrics-box';
 import { Users, Activity, Trophy } from 'lucide-react';

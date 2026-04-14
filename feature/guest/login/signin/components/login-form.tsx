@@ -22,12 +22,12 @@ export function LoginForm() {
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
       
       <header className="p-8">
-        <div className="flex items-center gap-2 group cursor-pointer">
+        <a href="/" className="flex items-center gap-2 group cursor-pointer">
           <div className="w-10 h-10 bg-[#E11D48] rounded flex items-center justify-center -skew-x-12">
             <Zap className="text-white fill-current" size={24} />
           </div>
           <span className="text-xl font-black tracking-tighter italic">NEXORA <span className="text-[#E11D48]">BJJ</span></span>
-        </div>
+        </a>
       </header>
 
       <main className="flex-grow flex items-center justify-center px-8 md:px-16 pb-12">

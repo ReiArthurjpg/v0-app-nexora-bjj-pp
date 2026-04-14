@@ -81,7 +81,7 @@ export function LoginForm() {
                   placeholder="Digite sua senha"
                   className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
                 />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-600 hover:text-white">
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute cursor-pointer inset-y-0 right-0 pr-4 flex items-center text-gray-600 hover:text-white">
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
@@ -92,17 +92,17 @@ export function LoginForm() {
                 <input type="checkbox" className="w-4 h-4 bg-white/5 border-white/10 rounded accent-[#E11D48]" />
                 <span className="text-gray-500 group-hover:text-white transition-colors">Lembrar de mim</span>
               </label>
-              <button type="button" onClick={() => router.push('/forgot-password')} className="text-[#E11D48] hover:underline italic">Esqueceu sua senha?</button>
+              <button type="button" onClick={() => router.push('/forgot-password')} className="text-[#E11D48] cursor-pointer hover:underline italic">Esqueceu sua senha?</button>
             </div>
 
-            <button className="w-full bg-[#E11D48] hover:bg-white hover:text-black py-5 rounded font-black text-lg uppercase italic tracking-tighter transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#E11D48]/10 group">
+            <button className="w-full cursor-pointer bg-[#E11D48] hover:bg-white hover:text-black py-5 rounded font-black text-lg uppercase italic tracking-tighter transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#E11D48]/10 group">
               ENTRAR <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" strokeWidth={3} />
             </button>
           </form>
 
           <div className="mt-8 text-center">
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600">Ou continuar com</p>
-            <button type="button" onClick={handleGoogleLogin} className="w-full mt-4 bg-transparent border border-white/10 hover:bg-white/5 py-4 rounded flex items-center justify-center gap-3 transition-all">
+            <button type="button" onClick={handleGoogleLogin} className="w-full cursor-pointer mt-4 bg-transparent border border-white/10 hover:bg-white/5 py-4 rounded flex items-center justify-center gap-3 transition-all">
               <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/google.svg" className="w-5 h-5" alt="Google" />
               <span className="text-xs font-black uppercase tracking-widest text-gray-300">Google Account</span>
             </button>
@@ -110,16 +110,16 @@ export function LoginForm() {
 
           <div className="mt-8 text-center">
             <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-              Não tem uma conta? <button onClick={() => router.push('/signup')} className="text-white hover:text-[#E11D48] ml-1">Criar conta</button>
+              Não tem uma conta? <button onClick={() => router.push('/signup')} className="cursor-pointer text-white hover:text-[#E11D48] ml-1">Criar conta</button>
             </p>
           </div>
         </div>
       </main>
 
       <footer className="p-8 flex justify-center gap-8 opacity-30 text-[9px] font-black uppercase tracking-widest">
-        <a href="#" className="hover:text-[#E11D48]">Privacidade</a>
-        <a href="#" className="hover:text-[#E11D48]">Suporte</a>
-        <a href="#" className="hover:text-[#E11D48]">Termos de Uso</a>
+        <a href="#" className="cursor-not-allowed">Privacidade</a>
+        <a href="#" className="cursor-not-allowed">Suporte</a>
+        <a href="#" className="cursor-not-allowed">Termos de Uso</a>
       </footer>
     </div>
   );

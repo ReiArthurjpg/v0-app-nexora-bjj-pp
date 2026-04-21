@@ -18,7 +18,7 @@ export function LoginForm() {
   };
 
   return (
-    <div className="w-full lg:w-[45%] flex flex-col relative z-10 bg-[#070708] border-r border-white/5">
+    <div className="w-full lg:w-[45%] flex  flex-col relative z-10 bg-[#070708] border-r border-white/5">
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
       
       <header className="p-8">
@@ -30,7 +30,7 @@ export function LoginForm() {
         </a>
       </header>
 
-      <main className="flex-grow flex items-center justify-center px-8 md:px-16 pb-12">
+      <main className="flex-grow flex items-center justify-end px-8 md:px-16 pb-12">
         <div className="w-full max-w-md">
           <div className="mb-10">
             <h1 className="text-4xl font-black italic uppercase tracking-tighter mb-2">

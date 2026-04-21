@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Zap,
   ChevronRight,
@@ -10,9 +10,14 @@ import {
   ShieldCheck,
   ArrowLeft,
   ShieldAlert,
-  Fingerprint
+  Fingerprint,
+  Loader2,
+  XCircle
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { authService } from '@/services/auth.service';
+import { toast } from 'sonner';
+import Cookies from 'js-cookie';
 
 interface ResetPasswordFormProps {
   token: string;
@@ -24,14 +29,91 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isValidating, setIsValidating] = useState(true);
+  const [isTokenValid, setIsTokenValid] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    async function validateToken() {
+      try {
+        const result = await authService.validateResetToken(token);
+        if (result && result.valid) {
+          setIsTokenValid(true);
+        } else {
+          toast.error(result?.message || 'Link de recuperação expirado ou inválido.');
+        }
+      } catch (error) {
+        console.error('Token validation error:', error);
+        toast.error('Erro ao validar token de segurança.');
+      } finally {
+        setIsValidating(false);
+      }
+    }
+    validateToken();
+  }, [token]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === confirmPassword && password.length >= 8) {
-      console.log('[v0] Password reset with token:', token);
-      router.push('/login');
+    if (password !== confirmPassword) {
+      toast.error('As senhas não coincidem.');
+      return;
+    }
+    if (password.length < 8) {
+      toast.error('A senha deve ter no mínimo 8 caracteres.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const result = await authService.resetPassword({ 
+        token, 
+        newPassword: password, 
+        confirmPassword 
+      });
+
+      if (result && (result.success || result.message)) {
+        toast.success('Senha atualizada com sucesso! Faça login com a nova senha.');
+        Cookies.remove('nexora_token');
+        router.push('/login');
+      } else {
+        toast.error(result?.message || 'Não foi possível redefinir sua senha.');
+      }
+    } catch (error) {
+      console.error('Reset password error:', error);
+      toast.error('Erro de conexão com o servidor.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  if (isValidating) {
+    return (
+      <div className="min-h-screen bg-[#070708] flex flex-col items-center justify-center text-white p-8">
+        <Loader2 className="animate-spin text-[#E11D48] mb-4" size={48} />
+        <p className="text-[10px] font-black uppercase tracking-[0.3em] animate-pulse">Validando token de segurança...</p>
+      </div>
+    );
+  }
+
+  if (!isTokenValid) {
+    return (
+      <div className="min-h-screen bg-[#070708] flex flex-col items-center justify-center text-white p-8">
+        <div className="w-20 h-20 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6">
+          <XCircle className="text-red-500" size={40} />
+        </div>
+        <h1 className="text-3xl font-black italic uppercase tracking-tighter mb-4 text-center">LINK <span className="text-[#E11D48]">EXPIRADO</span></h1>
+        <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest text-center max-w-xs mb-8">
+          Este link de recuperação não é mais válido ou já foi utilizado.
+        </p>
+        <button 
+          onClick={() => router.push('/forgot-password')}
+          className="bg-[#E11D48] hover:bg-white hover:text-black px-8 py-4 rounded font-black text-[10px] uppercase tracking-widest transition-all"
+        >
+          Solicitar novo link
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#070708] text-white font-sans selection:bg-[#E11D48] selection:text-white flex overflow-hidden">
@@ -41,7 +123,7 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
         
         <header className="p-8">
-          <div className="flex items-center gap-2 group cursor-pointer">
+          <div className="flex items-center gap-2 group cursor-pointer" onClick={() => router.push('/')}>
             <div className="w-10 h-10 bg-[#E11D48] rounded flex items-center justify-center -skew-x-12">
               <Zap className="text-white fill-current" size={24} />
             </div>
@@ -54,12 +136,13 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
             <div className="mb-10">
               <button 
                 onClick={() => router.push('/login')}
-                className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest mb-6 group"
+                disabled={isSubmitting}
+                className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest mb-6 group disabled:opacity-50"
               >
                 <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Voltar para o login
               </button>
               
-              <h1 className="text-4xl font-black italic uppercase tracking-tighter mb-2">
+              <h1 className="text-4xl font-black italic uppercase tracking-tighter mb-2 leading-none">
                 REDEFINIR <span className="text-[#E11D48]">SENHA</span>
               </h1>
               <p className="text-gray-500 text-xs font-bold uppercase tracking-widest leading-relaxed">
@@ -85,11 +168,13 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                     <Lock size={18} />
                   </div>
                   <input
+                    required
+                    disabled={isSubmitting}
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Sua nova senha forte"
-                    className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                    className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all disabled:opacity-50"
                   />
                   <button 
                     type="button" 
@@ -109,11 +194,13 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
                     <ShieldCheck size={18} />
                   </div>
                   <input
+                    required
+                    disabled={isSubmitting}
                     type={showConfirmPassword ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Repita a nova senha"
-                    className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                    className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all disabled:opacity-50"
                   />
                   <button 
                     type="button" 
@@ -138,24 +225,28 @@ export function ResetPasswordForm({ token }: ResetPasswordFormProps) {
 
               <button 
                 type="submit"
-                disabled={password.length < 8 || password !== confirmPassword}
+                disabled={isSubmitting || password.length < 8 || password !== confirmPassword}
                 className="w-full bg-[#E11D48] hover:bg-white hover:text-black disabled:opacity-50 disabled:cursor-not-allowed py-5 rounded font-black text-lg uppercase italic tracking-tighter transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#E11D48]/10 group mt-4"
               >
-                ATUALIZAR ACESSO <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" strokeWidth={3} />
+                {isSubmitting ? (
+                  <>ATUALIZANDO... <Loader2 className="animate-spin" size={20} /></>
+                ) : (
+                  <>ATUALIZAR ACESSO <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" strokeWidth={3} /></>
+                )}
               </button>
             </form>
 
             <div className="mt-8 text-center">
               <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-                Encontrou problemas? <button className="text-white hover:text-[#E11D48] ml-1">Falar com o Suporte</button>
+                Encontrou problemas? <button className="text-white hover:text-[#E11D48] ml-1 uppercase underline underline-offset-4">Falar com o Suporte</button>
               </p>
             </div>
           </div>
         </main>
 
-        <footer className="p-8 flex justify-center gap-8 opacity-30 text-[9px] font-black uppercase tracking-widest">
-          <span>SISTEMA DE SEGURANÇA NEXORA</span>
-          <span>© 2024</span>
+        <footer className="p-8 flex justify-center gap-8 opacity-30 text-[9px] font-black uppercase tracking-widest mt-auto">
+          <span className="text-white">SISTEMA DE SEGURANÇA NEXORA</span>
+          <span className="text-white">© 2024</span>
         </footer>
       </div>
 

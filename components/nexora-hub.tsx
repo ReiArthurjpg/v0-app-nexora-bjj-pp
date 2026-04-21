@@ -31,22 +31,24 @@ import {
   MonitorPlay,
   History
 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 export function NexoraHub() {
   const router = useRouter();
+  const { user } = useAuth();
   const [currentModule, setCurrentModule] = useState('dashboard');
   const [lastAccessedModule, setLastAccessedModule] = useState('alunos');
   const [currentTournamentSlide, setCurrentTournamentSlide] = useState(0);
   const [currentBannerSlide, setCurrentBannerSlide] = useState(0);
   const [currentPartnerSlide, setCurrentPartnerSlide] = useState(0);
-
-  // Dados do usuário
+  
+  // Dados do usuário (integrados com AuthContext)
   const userData = {
-    name: "Mestre Admin",
-    role: "Diretor Técnico",
-    academy: "Alliance BJJ",
-    initials: "MA",
-    avatar: "https://ui-avatars.com/api/?name=MA&background=E11D48&color=fff"
+    name: user?.name || "Visitante",
+    role: "Diretor Técnico", // Pode ser estendido se o backend retornar a role
+    academy: "Alliance BJJ", // Pode ser estendido se o backend retornar a academia
+    initials: user?.name?.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || "??",
+    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'U')}&background=E11D48&color=fff`
   };
 
   // Módulos do Sistema

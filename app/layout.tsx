@@ -33,6 +33,9 @@ export const metadata: Metadata = {
   },
 }
 
+import { AuthProvider } from '@/context/AuthContext'
+import { Toaster } from '@/components/ui/sonner'
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,8 +43,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${jakarta.variable} font-sans antialiased`}>
-        {children}
+      <body className={`${jakarta.variable} font-sans antialiased text-white`}>
+        <AuthProvider>
+          {children}
+          <Toaster richColors position="top-right" />
+        </AuthProvider>
         <Analytics />
       </body>
     </html>

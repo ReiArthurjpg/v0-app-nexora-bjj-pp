@@ -1,5 +1,5 @@
 import { LoginForm } from '@/feature/guest/login/signin/components/login-form';
-import { TestimonialsCarousel } from '@/components/testimonials-carousel';
+import { TestimonialsCarousel } from '@/feature/guest/login/signin/components/testimonials-carousel';
 import { MetricBox } from '@/feature/guest/login/shared/components';
 import { Users, Activity, Trophy } from 'lucide-react';
 

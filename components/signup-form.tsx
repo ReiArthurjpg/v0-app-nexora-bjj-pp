@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
   Zap, 
   ChevronRight, 
@@ -14,8 +15,31 @@ import {
   CheckCircle2,
   BarChart3,
   Layers,
-  Smartphone
+  Smartphone,
+  Loader2
 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { toast } from 'sonner';
+
+const signupSchema = z.object({
+  name: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
+  email: z.string().email('E-mail profissional inválido'),
+  academyName: z.string().min(2, 'Informe o nome da sua academia'),
+  password: z.string()
+    .min(8, 'A senha deve ter pelo menos 8 caracteres')
+    .regex(/[a-z]/, 'Deve conter ao menos uma letra minúscula')
+    .regex(/[A-Z]/, 'Deve conter ao menos uma letra maiúscula')
+    .regex(/\d/, 'Deve conter ao menos um número')
+    .regex(/[^a-zA-Z0-9\s]/, 'Deve conter ao menos um símbolo'),
+  terms: z.literal(true, {
+    errorMap: () => ({ message: 'Você deve aceitar os termos para continuar' }),
+  }),
+});
+
+type SignupFormData = z.infer<typeof signupSchema>;
 
 const features = [
   {
@@ -37,6 +61,45 @@ const features = [
 
 export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const { signup } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormData>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      terms: false,
+    }
+  });
+
+  const onSubmit = async (data: SignupFormData) => {
+    setIsSubmitting(true);
+    try {
+      // Replicating password as confirmPassword as requested
+      const payload = {
+        ...data,
+        confirmPassword: data.password
+      };
+
+      const result = await signup(payload);
+      
+      if (result && (result.success || result.id)) {
+        toast.success('Conta criada com sucesso! Faça login para começar.');
+        router.push('/login');
+      } else {
+        toast.error(result?.message || 'Erro ao criar conta. Verifique os dados e tente novamente.');
+      }
+    } catch (error: any) {
+      console.error('Signup error:', error);
+      toast.error('Erro ao conectar com o servidor. Tente novamente mais tarde.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#070708] text-white font-sans selection:bg-[#E11D48] selection:text-white flex overflow-hidden">
@@ -48,7 +111,7 @@ export function SignupForm() {
         
         <div className="relative z-10 max-w-2xl">
           <header className="mb-12">
-            <div className="flex items-center gap-2 group cursor-pointer">
+            <div className="flex items-center gap-2 group cursor-pointer" onClick={() => router.push('/')}>
               <div className="w-10 h-10 bg-[#E11D48] rounded flex items-center justify-center -skew-x-12">
                 <Zap className="text-white fill-current" size={24} />
               </div>
@@ -110,7 +173,7 @@ export function SignupForm() {
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
         
         <header className="p-8 lg:hidden">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" onClick={() => router.push('/')}>
             <div className="w-10 h-10 bg-[#E11D48] rounded flex items-center justify-center -skew-x-12">
               <Zap className="text-white fill-current" size={24} />
             </div>
@@ -133,7 +196,7 @@ export function SignupForm() {
               </p>
             </div>
 
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
               {/* Nome Completo */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Nome Completo</label>
@@ -142,11 +205,14 @@ export function SignupForm() {
                     <User size={18} />
                   </div>
                   <input 
+                    {...register('name')}
                     type="text" 
+                    disabled={isSubmitting}
                     placeholder="Seu nome e sobrenome"
-                    className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                    className={`w-full bg-white/5 border ${errors.name ? 'border-red-500' : 'border-white/10'} p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all disabled:opacity-50`}
                   />
                 </div>
+                {errors.name && <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-1">{errors.name.message}</p>}
               </div>
 
               {/* Email */}
@@ -157,11 +223,14 @@ export function SignupForm() {
                     <Mail size={18} />
                   </div>
                   <input 
+                    {...register('email')}
                     type="email" 
+                    disabled={isSubmitting}
                     placeholder="exemplo@academia.com"
-                    className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                    className={`w-full bg-white/5 border ${errors.email ? 'border-red-500' : 'border-white/10'} p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all disabled:opacity-50`}
                   />
                 </div>
+                {errors.email && <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-1">{errors.email.message}</p>}
               </div>
 
               {/* Nome da Academia */}
@@ -172,11 +241,14 @@ export function SignupForm() {
                     <Building2 size={18} />
                   </div>
                   <input 
+                    {...register('academyName')}
                     type="text" 
+                    disabled={isSubmitting}
                     placeholder="Ex: Gracie Barra Central"
-                    className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                    className={`w-full bg-white/5 border ${errors.academyName ? 'border-red-500' : 'border-white/10'} p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all disabled:opacity-50`}
                   />
                 </div>
+                {errors.academyName && <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-1">{errors.academyName.message}</p>}
               </div>
 
               {/* Senha */}
@@ -187,33 +259,50 @@ export function SignupForm() {
                     <Lock size={18} />
                   </div>
                   <input 
+                    {...register('password')}
                     type={showPassword ? "text" : "password"} 
+                    disabled={isSubmitting}
                     placeholder="Mínimo 8 caracteres"
-                    className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                    className={`w-full bg-white/5 border ${errors.password ? 'border-red-500' : 'border-white/10'} p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all disabled:opacity-50`}
                   />
                   <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-600 hover:text-white">
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
+                {errors.password && <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-1">{errors.password.message}</p>}
               </div>
 
               <div className="pt-2">
                 <label className="flex items-start gap-3 cursor-pointer group">
-                  <input type="checkbox" className="mt-1 w-4 h-4 bg-white/5 border-white/10 rounded accent-[#E11D48]" />
+                  <input 
+                    {...register('terms')}
+                    type="checkbox" 
+                    disabled={isSubmitting}
+                    className="mt-1 w-4 h-4 bg-white/5 border-white/10 rounded accent-[#E11D48] disabled:opacity-50" 
+                  />
                   <span className="text-[10px] font-bold text-gray-500 uppercase leading-relaxed tracking-wider group-hover:text-gray-300 transition-colors">
                     Eu aceito os <button type="button" className="text-[#E11D48] hover:underline">Termos de Serviço</button> e a <button type="button" className="text-[#E11D48] hover:underline">Política de Privacidade</button>.
                   </span>
                 </label>
+                {errors.terms && <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-1 mt-1">{errors.terms.message}</p>}
               </div>
 
-              <button className="w-full bg-[#E11D48] hover:bg-white hover:text-black py-5 rounded font-black text-lg uppercase italic tracking-tighter transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#E11D48]/20 group mt-6">
-                CRIAR MINHA CONTA <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" strokeWidth={3} />
+              <button 
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#E11D48] hover:bg-white hover:text-black py-5 rounded font-black text-lg uppercase italic tracking-tighter transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#E11D48]/20 group mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? (
+                  <>PROCESSANDO... <Loader2 className="animate-spin" size={20} /></>
+                ) : (
+                  <>CRIAR MINHA CONTA <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" strokeWidth={3} /></>
+                )}
               </button>
             </form>
 
             <div className="mt-8 text-center">
               <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-                Já possui uma conta? <button className="text-white font-black hover:text-[#E11D48] ml-1 transition-colors italic uppercase">Fazer Login</button>
+                Já possui uma conta? <button onClick={() => router.push('/login')} className="text-white font-black hover:text-[#E11D48] ml-1 transition-colors italic uppercase">Fazer Login</button>
               </p>
             </div>
           </div>
@@ -221,8 +310,8 @@ export function SignupForm() {
 
         <footer className="p-8 flex justify-center gap-8 opacity-30 text-[9px] font-black uppercase tracking-widest mt-auto">
           <span>© 2024 NEXORA BJJ SYSTEM</span>
-          <a href="#" className="hover:text-[#E11D48]">Suporte</a>
-          <a href="#" className="hover:text-[#E11D48]">Privacidade</a>
+          <a href="#" className="hover:text-[#E11D48] text-white">Suporte</a>
+          <a href="#" className="hover:text-[#E11D48] text-white">Privacidade</a>
         </footer>
       </div>
 

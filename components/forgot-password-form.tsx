@@ -13,18 +13,37 @@ import {
   CheckCircle2,
   Shield,
   Target,
-  BarChart3
+  BarChart3,
+  Loader2
 } from 'lucide-react';
+import { authService } from '@/services/auth.service';
+import { toast } from 'sonner';
 
 export function ForgotPasswordForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleResetRequest = (e: React.FormEvent) => {
+  const handleResetRequest = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
-      setIsSubmitted(true);
+    if (!email) return;
+
+    setIsSubmitting(true);
+    try {
+      const result = await authService.forgotPassword(email);
+      
+      // Generic success check for forgot password
+      if (result && (result.success || result.message)) {
+        setIsSubmitted(true);
+      } else {
+        toast.error(result?.message || 'Ocorreu um erro ao processar sua solicitação.');
+      }
+    } catch (error: any) {
+      console.error('Forgot password error:', error);
+      toast.error('Erro ao conectar com o servidor. Tente novamente mais tarde.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -37,7 +56,7 @@ export function ForgotPasswordForm() {
         
         <div className="relative z-10 max-w-2xl">
           <header className="mb-12">
-            <div className="flex items-center gap-2 group cursor-pointer">
+            <div className="flex items-center gap-2 group cursor-pointer" onClick={() => router.push('/')}>
               <div className="w-10 h-10 bg-[#E11D48] rounded flex items-center justify-center -skew-x-12">
                 <Zap className="text-white fill-current" size={24} />
               </div>
@@ -100,7 +119,7 @@ export function ForgotPasswordForm() {
         
         {/* Header para mobile apenas */}
         <header className="p-8 lg:hidden">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" onClick={() => router.push('/')}>
             <div className="w-8 h-8 bg-[#E11D48] rounded flex items-center justify-center -skew-x-12">
               <Zap className="text-white fill-current" size={18} />
             </div>
@@ -113,7 +132,8 @@ export function ForgotPasswordForm() {
             
             <button 
               onClick={() => router.push('/login')}
-              className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors mb-10 text-[10px] font-black uppercase tracking-widest group"
+              disabled={isSubmitting}
+              className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors mb-10 text-[10px] font-black uppercase tracking-widest group disabled:opacity-50"
             >
               <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> 
               Voltar ao login
@@ -140,19 +160,25 @@ export function ForgotPasswordForm() {
                       <input
                         required
                         type="email"
+                        disabled={isSubmitting}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="nome@academia.com"
-                        className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                        className="w-full bg-white/5 border border-white/10 p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all disabled:opacity-50"
                       />
                     </div>
                   </div>
 
                   <button 
                     type="submit"
-                    className="w-full bg-[#E11D48] hover:bg-white hover:text-black py-5 rounded font-black text-lg uppercase italic tracking-tighter transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#E11D48]/10 group"
+                    disabled={isSubmitting || !email}
+                    className="w-full bg-[#E11D48] hover:bg-white hover:text-black py-5 rounded font-black text-lg uppercase italic tracking-tighter transition-all flex items-center justify-center gap-3 shadow-xl shadow-[#E11D48]/10 group disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    ENVIAR INSTRUÇÕES <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" strokeWidth={3} />
+                    {isSubmitting ? (
+                      <>PROCESSANDO... <Loader2 className="animate-spin" size={20} /></>
+                    ) : (
+                      <>ENVIAR INSTRUÇÕES <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" strokeWidth={3} /></>
+                    )}
                   </button>
                 </form>
 
@@ -174,7 +200,7 @@ export function ForgotPasswordForm() {
                 </p>
                 <button 
                   onClick={() => setIsSubmitted(false)}
-                  className="w-full bg-white/5 border border-white/10 hover:bg-white/10 py-4 rounded font-black text-[10px] uppercase tracking-widest transition-all"
+                  className="w-full bg-white/5 border border-white/10 hover:bg-white/10 py-4 rounded font-black text-[10px] uppercase tracking-widest transition-all text-white"
                 >
                   Tentar outro e-mail
                 </button>
@@ -183,9 +209,9 @@ export function ForgotPasswordForm() {
           </div>
         </main>
 
-        <footer className="p-8 flex justify-center gap-8 opacity-30 text-[9px] font-black uppercase tracking-widest">
+        <footer className="p-8 flex justify-center gap-8 opacity-30 text-[9px] font-black uppercase tracking-widest mt-auto">
           <span className="text-gray-400">© 2024 NEXORA SYSTEMS</span>
-          <a href="#" className="hover:text-[#E11D48]">POLÍTICA DE PRIVACIDADE</a>
+          <a href="#" className="hover:text-[#E11D48] text-white">POLÍTICA DE PRIVACIDADE</a>
         </footer>
       </div>
     </div>

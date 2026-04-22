@@ -12,6 +12,15 @@ export interface User {
   id: number;
   name: string;
   email: string;
+  phone?: string;
+  birth_date?: string;
+  gender?: string;
+  cpf?: string;
+  address?: string;
+  belt?: string;
+  degree?: string;
+  last_graduation?: string;
+  academy_name?: string;
 }
 
 export interface AuthResponse extends BaseResponse {

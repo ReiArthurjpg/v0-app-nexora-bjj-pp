@@ -21,31 +21,33 @@ import {
   Zap,
   Camera
 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 export function DirectorProfile() {
   const router = useRouter();
+  const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
 
-  // Dados do utilizador
+  // Dados do utilizador dinâmicos
   const userData = {
-    name: "Mestre Admin",
-    fullName: "Ricardo 'Mestre' Almeida da Silva",
-    email: "admin@alliancebjj.com",
-    phone: "+351 912 345 678",
-    birthDate: "15/05/1985",
-    gender: "Masculino",
-    cpf: "123.456.789-00",
-    address: "Rua do Tatame, nº 123, Lisboa, PT",
-    academy: "Alliance BJJ",
+    name: user?.name?.split(' ')[0] || "Mestre",
+    fullName: user?.name || "Nome não informado",
+    email: user?.email || "email@exemplo.com",
+    phone: user?.phone || "Não informado",
+    birthDate: user?.birth_date || "Não informado",
+    gender: user?.gender || "Não informado",
+    cpf: user?.cpf || "Não informado",
+    address: user?.address || "Não informado",
+    academy: user?.academy_name || "Alliance BJJ",
     role: "Diretor Técnico",
-    avatar: "https://ui-avatars.com/api/?name=MA&background=E11D48&color=fff",
+    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'M')}&background=E11D48&color=fff`,
     
     // Dados Técnicos (Graduação)
-    belt: "Preta",
-    degree: "3º Grau",
-    lastPromotion: "12/12/2023",
+    belt: user?.belt || "Branca",
+    degree: user?.degree || "0º Grau",
+    lastPromotion: user?.last_graduation || "Nenhuma",
     beltColor: "#000000",
-    stripes: 3
+    stripes: parseInt(user?.degree?.charAt(0) || "0")
   };
 
   // Cores das faixas para lógica visual

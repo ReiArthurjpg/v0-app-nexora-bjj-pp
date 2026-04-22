@@ -28,15 +28,27 @@ const signupSchema = z.object({
   name: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
   email: z.string().email('E-mail profissional inválido'),
   academyName: z.string().min(2, 'Informe o nome da sua academia'),
+  phone: z.string().optional(),
+  birthDate: z.string().optional(),
+  gender: z.string().optional(),
+  cpf: z.string().optional(),
+  address: z.string().optional(),
+  belt: z.string().optional(),
+  degree: z.string().optional(),
+  lastGraduation: z.string().optional(),
   password: z.string()
     .min(8, 'A senha deve ter pelo menos 8 caracteres')
     .regex(/[a-z]/, 'Deve conter ao menos uma letra minúscula')
     .regex(/[A-Z]/, 'Deve conter ao menos uma letra maiúscula')
     .regex(/\d/, 'Deve conter ao menos um número')
     .regex(/[^a-zA-Z0-9\s]/, 'Deve conter ao menos um símbolo'),
+  confirmPassword: z.string().min(1, 'Confirmação de senha é obrigatória'),
   terms: z.literal(true, {
     errorMap: () => ({ message: 'Você deve aceitar os termos para continuar' }),
   }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "As senhas não coincidem",
+  path: ["confirmPassword"],
 });
 
 type SignupFormData = z.infer<typeof signupSchema>;
@@ -82,7 +94,9 @@ export function SignupForm() {
       // Replicating password as confirmPassword as requested
       const payload = {
         ...data,
-        confirmPassword: data.password
+        academy_name: data.academyName,
+        birth_date: data.birthDate,
+        last_graduation: data.lastGraduation
       };
 
       const result = await signup(payload);
@@ -251,6 +265,90 @@ export function SignupForm() {
                 {errors.academyName && <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-1">{errors.academyName.message}</p>}
               </div>
 
+              {/* Novos campos agrupados */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Telefone</label>
+                  <input 
+                    {...register('phone')}
+                    type="text" 
+                    placeholder="(00) 00000-0000"
+                    className="w-full bg-white/5 border border-white/10 p-4 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">CPF</label>
+                  <input 
+                    {...register('cpf')}
+                    type="text" 
+                    placeholder="000.000.000-00"
+                    className="w-full bg-white/5 border border-white/10 p-4 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Data de Nascimento</label>
+                  <input 
+                    {...register('birthDate')}
+                    type="date" 
+                    className="w-full bg-white/5 border border-white/10 p-4 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all text-gray-400"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Sexo / Gênero</label>
+                  <select 
+                    {...register('gender')}
+                    className="w-full bg-white/5 border border-white/10 p-4 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all text-gray-400"
+                  >
+                    <option value="" className="bg-[#070708]">Selecione</option>
+                    <option value="Masculino" className="bg-[#070708]">Masculino</option>
+                    <option value="Feminino" className="bg-[#070708]">Feminino</option>
+                    <option value="Outro" className="bg-[#070708]">Outro</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Endereço</label>
+                <input 
+                  {...register('address')}
+                  type="text" 
+                  placeholder="Rua, Número, Bairro, Cidade - UF"
+                  className="w-full bg-white/5 border border-white/10 p-4 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Faixa</label>
+                  <input 
+                    {...register('belt')}
+                    type="text" 
+                    placeholder="Ex: Preta"
+                    className="w-full bg-white/5 border border-white/10 p-4 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Grau</label>
+                  <input 
+                    {...register('degree')}
+                    type="text" 
+                    placeholder="Ex: 3º Grau"
+                    className="w-full bg-white/5 border border-white/10 p-4 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Graduação</label>
+                  <input 
+                    {...register('lastGraduation')}
+                    type="date" 
+                    className="w-full bg-white/5 border border-white/10 p-4 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all text-gray-400"
+                  />
+                </div>
+              </div>
+
               {/* Senha */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Senha</label>
@@ -270,6 +368,24 @@ export function SignupForm() {
                   </button>
                 </div>
                 {errors.password && <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-1">{errors.password.message}</p>}
+              </div>
+
+              {/* Confirmar Senha */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Confirmar Senha</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-600 group-focus-within:text-[#E11D48]">
+                    <Lock size={18} />
+                  </div>
+                  <input 
+                    {...register('confirmPassword')}
+                    type={showPassword ? "text" : "password"} 
+                    disabled={isSubmitting}
+                    placeholder="Repita sua senha"
+                    className={`w-full bg-white/5 border ${errors.confirmPassword ? 'border-red-500' : 'border-white/10'} p-4 pl-12 rounded font-bold text-sm focus:outline-none focus:border-[#E11D48] transition-all disabled:opacity-50`}
+                  />
+                </div>
+                {errors.confirmPassword && <p className="text-[10px] text-red-500 font-bold uppercase tracking-widest ml-1">{errors.confirmPassword.message}</p>}
               </div>
 
               <div className="pt-2">

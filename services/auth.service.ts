@@ -86,4 +86,12 @@ export const authService = {
     const response = await fetchApi('/auth/google');
     return response.json();
   },
+  
+  async updateProfile(data: any): Promise<any> {
+    const response = await fetchApi('/auth/me', {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+    return response.json();
+  },
 };

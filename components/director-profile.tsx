@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { 
   User, 
@@ -19,14 +19,93 @@ import {
   ChevronRight,
   ArrowLeft,
   Zap,
-  Camera
+  Camera,
+  Save,
+  X
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
+
+const profileSchema = z.object({
+  name: z.string().min(3, 'Nome deve ter pelo menos 3 caracteres'),
+  phone: z.string().optional(),
+  birth_date: z.string().optional(),
+  gender: z.string().optional(),
+  cpf: z.string().optional(),
+  address: z.string().optional(),
+  belt: z.string().optional(),
+  degree: z.string().optional(),
+  last_graduation: z.string().optional(),
+  academy_name: z.string().optional(),
+});
+
+type ProfileFormData = z.infer<typeof profileSchema>;
 
 export function DirectorProfile() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, updateProfile } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ProfileFormData>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      name: user?.name || "",
+      phone: user?.phone || "",
+      birth_date: user?.birth_date || "",
+      gender: user?.gender || "",
+      cpf: user?.cpf || "",
+      address: user?.address || "",
+      belt: user?.belt || "",
+      degree: user?.degree || "",
+      last_graduation: user?.last_graduation || "",
+      academy_name: user?.academy_name || "",
+    }
+  });
+
+  // Reset form when user data loads or editing starts
+  useEffect(() => {
+    if (user && isEditing) {
+      reset({
+        name: user.name,
+        phone: user.phone,
+        birth_date: user.birth_date,
+        gender: user.gender,
+        cpf: user.cpf,
+        address: user.address,
+        belt: user.belt,
+        degree: user.degree,
+        last_graduation: user.last_graduation,
+        academy_name: user.academy_name,
+      });
+    }
+  }, [user, isEditing, reset]);
+
+  const onUpdateProfile = async (data: ProfileFormData) => {
+    setIsSaving(true);
+    try {
+      const result = await updateProfile(data);
+      if (result.user) {
+        toast.success('Perfil atualizado com sucesso!');
+        setIsEditing(false);
+      } else {
+        toast.error(result.message || 'Erro ao atualizar perfil.');
+      }
+    } catch (error) {
+      toast.error('Erro ao conectar com o servidor.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   // Dados do utilizador dinâmicos
   const userData = {
@@ -51,7 +130,7 @@ export function DirectorProfile() {
   };
 
   // Cores das faixas para lógica visual
-  const beltColors = {
+  const beltColors: Record<string, string> = {
     "Branca": "bg-white text-black",
     "Azul": "bg-blue-600 text-white",
     "Roxa": "bg-purple-700 text-white",
@@ -120,10 +199,23 @@ export function DirectorProfile() {
               <p className="text-[10px] font-bold text-[#E11D48] uppercase tracking-[0.3em] mb-8 italic">{userData.role}</p>
 
               <div className="flex gap-3 w-full">
-                <button className="flex-1 py-4 bg-[#E11D48] hover:bg-[#C4183C] rounded-2xl flex items-center justify-center gap-3 transition-all active:scale-95 shadow-lg shadow-[#E11D48]/20">
-                  <Edit3 size={16} />
-                  <span className="text-[10px] font-black uppercase tracking-widest italic">Editar Perfil</span>
-                </button>
+                {!isEditing ? (
+                  <button 
+                    onClick={() => setIsEditing(true)}
+                    className="flex-1 py-4 bg-[#E11D48] hover:bg-[#C4183C] rounded-2xl flex items-center justify-center gap-3 transition-all active:scale-95 shadow-lg shadow-[#E11D48]/20"
+                  >
+                    <Edit3 size={16} />
+                    <span className="text-[10px] font-black uppercase tracking-widest italic">Editar Perfil</span>
+                  </button>
+                ) : (
+                  <button 
+                    onClick={() => setIsEditing(false)}
+                    className="flex-1 py-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-2xl flex items-center justify-center gap-3 transition-all active:scale-95"
+                  >
+                    <X size={16} />
+                    <span className="text-[10px] font-black uppercase tracking-widest italic">Cancelar</span>
+                  </button>
+                )}
                 <button className="p-4 bg-white/5 border border-white/10 hover:bg-white/10 rounded-2xl transition-all group shadow-inner">
                   <Lock size={18} className="text-gray-400 group-hover:text-white" />
                 </button>
@@ -173,93 +265,206 @@ export function DirectorProfile() {
             <div className="bg-[#111112] border border-white/5 rounded-[3rem] p-10 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-80 h-80 bg-[#E11D48]/5 blur-[100px] -mr-40 -mt-40"></div>
               
-              <div className="flex items-center justify-between mb-12">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-                    <ShieldCheck size={20} className="text-[#E11D48]" />
+              <form onSubmit={handleSubmit(onUpdateProfile)}>
+                <div className="flex items-center justify-between mb-12">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-white/5 rounded-xl border border-white/10">
+                      <ShieldCheck size={20} className="text-[#E11D48]" />
+                    </div>
+                    <h3 className="text-xl font-black uppercase italic tracking-tighter text-white">
+                      {isEditing ? 'Editar Informações' : 'Dados Pessoais'}
+                    </h3>
                   </div>
-                  <h3 className="text-xl font-black uppercase italic tracking-tighter text-white">Dados Pessoais</h3>
-                </div>
-                <div className="px-4 py-1.5 bg-[#00FF00]/10 border border-[#00FF00]/20 rounded-full flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00FF00] animate-pulse"></span>
-                  <span className="text-[8px] font-black uppercase tracking-widest text-[#00FF00]">Conta Ativa</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 relative z-10">
-                
-                {/* NOME COMPLETO */}
-                <div className="md:col-span-2">
-                  <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Nome Completo</label>
-                  <div className="bg-white/5 border border-white/5 p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all">
-                    <User size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
-                    <span className="text-base font-bold italic tracking-wide text-white/90">{userData.fullName}</span>
-                  </div>
-                </div>
-
-                {/* EMAIL */}
-                <div>
-                  <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Endereço de Email</label>
-                  <div className="bg-white/5 border border-white/5 p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all">
-                    <Mail size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
-                    <span className="text-sm font-bold italic text-white/80">{userData.email}</span>
-                  </div>
+                  {isEditing ? (
+                    <button 
+                      type="submit"
+                      disabled={isSaving}
+                      className="px-6 py-2.5 bg-[#E11D48] hover:bg-[#C4183C] rounded-full flex items-center gap-3 transition-all active:scale-95 disabled:opacity-50"
+                    >
+                      {isSaving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
+                      <span className="text-[10px] font-black uppercase tracking-widest">Salvar Alterações</span>
+                    </button>
+                  ) : (
+                    <div className="px-4 py-1.5 bg-[#00FF00]/10 border border-[#00FF00]/20 rounded-full flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00FF00] animate-pulse"></span>
+                      <span className="text-[8px] font-black uppercase tracking-widest text-[#00FF00]">Conta Ativa</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* TELEFONE */}
-                <div>
-                  <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Contacto Telefónico</label>
-                  <div className="bg-white/5 border border-white/5 p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all">
-                    <Phone size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
-                    <span className="text-sm font-bold italic text-white/80">{userData.phone}</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 relative z-10">
+                  
+                  {/* NOME COMPLETO */}
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Nome Completo</label>
+                    <div className={`bg-white/5 border ${isEditing ? 'border-white/20' : 'border-white/5'} p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all`}>
+                      <User size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
+                      {isEditing ? (
+                        <input 
+                          {...register('name')}
+                          className="bg-transparent border-none outline-none text-base font-bold italic tracking-wide text-white w-full"
+                          placeholder="Seu nome completo"
+                        />
+                      ) : (
+                        <span className="text-base font-bold italic tracking-wide text-white/90">{userData.fullName}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* DATA NASCIMENTO */}
-                <div>
-                  <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Data de Nascimento</label>
-                  <div className="bg-white/5 border border-white/5 p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all">
-                    <Calendar size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
-                    <span className="text-sm font-bold italic text-white/80">{userData.birthDate}</span>
+                  {/* EMAIL */}
+                  <div>
+                    <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Endereço de Email</label>
+                    <div className="bg-white/5 border border-white/5 p-5 rounded-2xl flex items-center gap-4 group opacity-60">
+                      <Mail size={18} className="text-[#E11D48]/50" />
+                      <span className="text-sm font-bold italic text-white/80">{userData.email}</span>
+                    </div>
                   </div>
-                </div>
 
-                {/* SEXO */}
-                <div>
-                  <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Sexo / Género</label>
-                  <div className="bg-white/5 border border-white/5 p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all">
-                    <Zap size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
-                    <span className="text-sm font-bold italic text-white/80">{userData.gender}</span>
+                  {/* TELEFONE */}
+                  <div>
+                    <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Contacto Telefónico</label>
+                    <div className={`bg-white/5 border ${isEditing ? 'border-white/20' : 'border-white/5'} p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all`}>
+                      <Phone size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
+                      {isEditing ? (
+                        <input 
+                          {...register('phone')}
+                          className="bg-transparent border-none outline-none text-sm font-bold italic text-white w-full"
+                          placeholder="(00) 00000-0000"
+                        />
+                      ) : (
+                        <span className="text-sm font-bold italic text-white/80">{userData.phone}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* CPF */}
-                <div>
-                  <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Documento Identificação (CPF)</label>
-                  <div className="bg-white/5 border border-white/5 p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all">
-                    <CreditCard size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
-                    <span className="text-sm font-bold italic text-white/80">{userData.cpf}</span>
+                  {/* DATA NASCIMENTO */}
+                  <div>
+                    <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Data de Nascimento</label>
+                    <div className={`bg-white/5 border ${isEditing ? 'border-white/20' : 'border-white/5'} p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all`}>
+                      <Calendar size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
+                      {isEditing ? (
+                        <input 
+                          {...register('birth_date')}
+                          type="date"
+                          className="bg-transparent border-none outline-none text-sm font-bold italic text-white w-full text-gray-400"
+                        />
+                      ) : (
+                        <span className="text-sm font-bold italic text-white/80">{userData.birthDate}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* ACADEMIA */}
-                <div>
-                  <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Unidade Principal</label>
-                  <div className="bg-white/5 border border-white/5 p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all">
-                    <Star size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
-                    <span className="text-sm font-bold italic text-white/80">{userData.academy}</span>
+                  {/* SEXO */}
+                  <div>
+                    <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Sexo / Género</label>
+                    <div className={`bg-white/5 border ${isEditing ? 'border-white/20' : 'border-white/5'} p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all`}>
+                      <Zap size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
+                      {isEditing ? (
+                        <select 
+                          {...register('gender')}
+                          className="bg-transparent border-none outline-none text-sm font-bold italic text-white w-full text-gray-400"
+                        >
+                          <option value="Masculino" className="bg-[#070708]">Masculino</option>
+                          <option value="Feminino" className="bg-[#070708]">Feminino</option>
+                          <option value="Outro" className="bg-[#070708]">Outro</option>
+                        </select>
+                      ) : (
+                        <span className="text-sm font-bold italic text-white/80">{userData.gender}</span>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* ENDEREÇO */}
-                <div className="md:col-span-2">
-                  <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Morada de Residência</label>
-                  <div className="bg-white/5 border border-white/5 p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all">
-                    <MapPin size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
-                    <span className="text-sm font-bold italic text-white/80">{userData.address}</span>
+                  {/* CPF */}
+                  <div>
+                    <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Documento Identificação (CPF)</label>
+                    <div className={`bg-white/5 border ${isEditing ? 'border-white/20' : 'border-white/5'} p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all`}>
+                      <CreditCard size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
+                      {isEditing ? (
+                        <input 
+                          {...register('cpf')}
+                          className="bg-transparent border-none outline-none text-sm font-bold italic text-white w-full"
+                          placeholder="000.000.000-00"
+                        />
+                      ) : (
+                        <span className="text-sm font-bold italic text-white/80">{userData.cpf}</span>
+                      )}
+                    </div>
                   </div>
+
+                  {/* ACADEMIA */}
+                  <div>
+                    <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Unidade Principal</label>
+                    <div className={`bg-white/5 border ${isEditing ? 'border-white/20' : 'border-white/5'} p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all`}>
+                      <Star size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
+                      {isEditing ? (
+                        <input 
+                          {...register('academy_name')}
+                          className="bg-transparent border-none outline-none text-sm font-bold italic text-white w-full"
+                          placeholder="Nome da sua academia"
+                        />
+                      ) : (
+                        <span className="text-sm font-bold italic text-white/80">{userData.academy}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* ENDEREÇO */}
+                  <div className="md:col-span-2">
+                    <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Morada de Residência</label>
+                    <div className={`bg-white/5 border ${isEditing ? 'border-white/20' : 'border-white/5'} p-5 rounded-2xl flex items-center gap-4 group hover:border-[#E11D48]/30 transition-all`}>
+                      <MapPin size={18} className="text-[#E11D48]/50 group-hover:text-[#E11D48] transition-colors" />
+                      {isEditing ? (
+                        <input 
+                          {...register('address')}
+                          className="bg-transparent border-none outline-none text-sm font-bold italic text-white w-full"
+                          placeholder="Rua, Número, Bairro, Cidade - UF"
+                        />
+                      ) : (
+                        <span className="text-sm font-bold italic text-white/80">{userData.address}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* NOVOS CAMPOS TÉCNICOS (FAIXA, GRAU, ETC) - Só aparecem se estiver editando para facilitar */}
+                  {isEditing && (
+                    <>
+                      <div>
+                        <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Faixa</label>
+                        <div className="bg-white/5 border border-white/20 p-5 rounded-2xl flex items-center gap-4">
+                          <Trophy size={18} className="text-[#E11D48]/50" />
+                          <input 
+                            {...register('belt')}
+                            className="bg-transparent border-none outline-none text-sm font-bold italic text-white w-full"
+                            placeholder="Ex: Preta"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Grau</label>
+                        <div className="bg-white/5 border border-white/20 p-5 rounded-2xl flex items-center gap-4">
+                          <Star size={18} className="text-[#E11D48]/50" />
+                          <input 
+                            {...register('degree')}
+                            className="bg-transparent border-none outline-none text-sm font-bold italic text-white w-full"
+                            placeholder="Ex: 3º Grau"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-black text-gray-600 uppercase tracking-[0.3em] italic mb-3 block">Última Graduação</label>
+                        <div className="bg-white/5 border border-white/20 p-5 rounded-2xl flex items-center gap-4">
+                          <Calendar size={18} className="text-[#E11D48]/50" />
+                          <input 
+                            {...register('last_graduation')}
+                            type="date"
+                            className="bg-transparent border-none outline-none text-sm font-bold italic text-white w-full text-gray-400"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
-              </div>
+              </form>
             </div>
 
             {/* SECÇÃO DE AJUDA */}

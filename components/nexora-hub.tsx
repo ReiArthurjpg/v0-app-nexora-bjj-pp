@@ -29,13 +29,14 @@ import {
   Settings,
   DollarSign,
   MonitorPlay,
-  History
+  History,
+  LogOut
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
 export function NexoraHub() {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [currentModule, setCurrentModule] = useState('dashboard');
   const [lastAccessedModule, setLastAccessedModule] = useState('alunos');
   const [currentTournamentSlide, setCurrentTournamentSlide] = useState(0);
@@ -181,6 +182,13 @@ export function NexoraHub() {
               </div>
               <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-[#00FF00] border-4 border-[#070708] rounded-full"></div>
             </div>
+            <button 
+              onClick={logout}
+              className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-red-500/10 hover:border-red-500/50 transition-all text-gray-400 hover:text-red-500 group"
+              title="Sair do Sistema"
+            >
+              <LogOut size={20} className="group-hover:translate-x-1 transition-transform" />
+            </button>
           </div>
         </div>
       </header>

@@ -8,6 +8,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
+import { useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { authService } from '@/services/auth.service';
 
 const loginSchema = z.object({
   email: z.string().email('E-mail inválido'),
@@ -19,8 +22,17 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login, isLoading: authLoading } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const error = searchParams.get('error');
+    const message = searchParams.get('message');
+    if (error === 'google_auth_failed') {
+      toast.error(`Falha na autenticação Google: ${message || 'Erro desconhecido'}`);
+    }
+  }, [searchParams]);
 
   const {
     register,
@@ -159,10 +171,15 @@ export function LoginForm() {
               type="button" 
               onClick={async () => {
                 try {
-                  const { url } = await authService.getGoogleAuthUrl();
-                  if (url) window.location.href = url;
-                } catch (error) {
-                  toast.error('Erro ao conectar com Google');
+                  const result = await authService.getGoogleAuthUrl();
+                  if (result && result.url) {
+                    window.location.href = result.url;
+                  } else {
+                    toast.error('O servidor não retornou uma URL do Google.');
+                  }
+                } catch (error: any) {
+                  console.error('Google link error:', error);
+                  toast.error('Erro ao conectar com Google. O servidor está online?');
                 }
               }} 
               disabled={isLoading}

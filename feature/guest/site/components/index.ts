@@ -1,5 +1,5 @@
 export { BenefitSection } from './BenefitSection/controller/benefit-section'
-export { FeatureSection } from './FeatureSection'
+export { FeatureSection } from './FeatureSection/controller/feature-section'
 export { StepsSection } from './StepsSection'
 export { PricingSection } from './PricingSection'
 export { MVPSection } from './MVPSection'

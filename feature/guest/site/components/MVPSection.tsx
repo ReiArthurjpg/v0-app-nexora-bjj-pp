@@ -1,1 +1,0 @@
-export { MVPSection } from './MVPSection/controller/mvp-section'

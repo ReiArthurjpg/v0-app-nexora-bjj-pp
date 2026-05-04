@@ -1,4 +1,4 @@
-export { BenefitSection } from './BenefitSection'
+export { BenefitSection } from './BenefitSection/controller/benefit-section'
 export { FeatureSection } from './FeatureSection'
 export { StepsSection } from './StepsSection'
 export { PricingSection } from './PricingSection'

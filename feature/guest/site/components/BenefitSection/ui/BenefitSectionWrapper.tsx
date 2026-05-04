@@ -4,11 +4,12 @@ export function BenefitSectionWrapper({ children }: { children: React.ReactNode 
   return (
     <section
       id="beneficios"
-      className="py-32 px-6 bg-white text-black relative overflow-hidden"
+      className="py-32 px-6 bg-[#070708] text-white relative overflow-hidden"
     >
-      {/* Background Decoration */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-5">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] bg-[#E11D48] rounded-full blur-[120px] -translate-y-1/2" />
+      {/* Background Decoration — Brilho sutil nas bordas */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div className="absolute -top-[20%] -left-[10%] w-[600px] h-[600px] bg-[#E11D48]/10 rounded-full blur-[150px]" />
+        <div className="absolute -bottom-[20%] -right-[10%] w-[600px] h-[600px] bg-[#E11D48]/5 rounded-full blur-[150px]" />
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">

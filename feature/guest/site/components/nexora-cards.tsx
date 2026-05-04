@@ -2,14 +2,35 @@
 
 import { CheckCircle2 } from 'lucide-react'
 
-export function BenefitCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+export function BenefitCard({ 
+  icon, 
+  title, 
+  description,
+  metric 
+}: { 
+  icon: React.ReactNode; 
+  title: string; 
+  description: string;
+  metric?: string;
+}) {
   return (
-    <div className="flex cursor-pointer flex-col items-center text-center p-8 rounded-2xl bg-gray-50/50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 group">
-      <div className="w-16 h-16 bg-[#E11D48]/5 text-[#E11D48] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#E11D48] group-hover:text-white transition-all duration-500">
+    <div className="flex cursor-pointer flex-col p-10 rounded-2xl bg-white/5 border border-white/5 hover:border-[#E11D48]/30 transition-all duration-500 group relative overflow-hidden h-full">
+      {/* Background Glow on Hover */}
+      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-32 h-32 bg-[#E11D48]/10 blur-[60px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+      
+      <div className="w-14 h-14 bg-[#E11D48]/10 text-[#E11D48] rounded-xl flex items-center justify-center mb-8 group-hover:bg-[#E11D48] group-hover:text-white transition-all duration-500 shadow-lg shadow-[#E11D48]/10">
         {icon}
       </div>
-      <h3 className="text-2xl font-black uppercase italic tracking-tighter text-[#070708] mb-4">{title}</h3>
-      <p className="text-gray-600 font-medium leading-relaxed line-clamp-3">{description}</p>
+
+      <div className="flex flex-col gap-4">
+        {metric && (
+          <span className="text-4xl font-black italic tracking-tighter text-[#E11D48]">
+            {metric}
+          </span>
+        )}
+        <h3 className="text-2xl font-black uppercase italic tracking-tighter text-white">{title}</h3>
+        <p className="text-gray-400 font-medium leading-relaxed">{description}</p>
+      </div>
     </div>
   )
 }

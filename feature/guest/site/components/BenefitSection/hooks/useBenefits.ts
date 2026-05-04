@@ -5,26 +5,30 @@ export function useBenefits() {
     {
       icon: TrendingUp,
       title: 'Aumento de Retenção',
+      metric: '+45%',
       description:
-        'Com o sistema de graduação automática, o aluno visualiza o progresso e sente-se motivado a não faltar aos treinos. Menos desistências, mais mensalidades.',
+        'Com o sistema de graduação automática, o aluno visualiza o progresso e sente-se motivado a não faltar aos treinos.',
     },
     {
       icon: ShieldCheck,
       title: 'Inadimplência Zero',
+      metric: 'R$ 0',
       description:
-        'Automação completa de cobranças recorrentes via cartão ou boleto. O sistema bloqueia o check-in de alunos com pagamentos pendentes automaticamente.',
+        'Automação completa de cobranças recorrentes. O sistema bloqueia check-ins de alunos com pagamentos pendentes.',
     },
     {
       icon: Clock,
-      title: 'Economia de 10h/semana',
+      title: 'Economia Semanal',
+      metric: '10H',
       description:
-        'Elimine planilhas manuais e o tempo gasto conferindo quem pagou ou quem deve subir de grau. Tudo é processado em tempo real.',
+        'Elimine planilhas manuais e o tempo gasto conferindo pagamentos ou quem deve subir de grau. Tudo em tempo real.',
     },
     {
       icon: HeartPulse,
       title: 'Saúde do Aluno',
+      metric: '100%',
       description:
-        'Histórico de lesões e anamnese integrados. Proteja seus atletas e a sua academia com termos de responsabilidade assinados digitalmente.',
+        'Histórico de lesões e anamnese integrados. Proteja seus atletas com termos de responsabilidade digitais.',
     },
   ]
 

@@ -4,7 +4,6 @@ import {
   NexoraNavbar,
   HeroSection,
   HeroContent,
-  HeroVisual
 } from '@/feature/guest/site/components/NexoraHero/ui'
 import { useHeroNavigation } from '@/feature/guest/site/components/NexoraHero/hooks/useHeroNavigation'
 
@@ -20,9 +19,8 @@ export function NexoraHero() {
       />
 
       <HeroSection>
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <HeroContent />
-          <HeroVisual />
+        <div className="flex flex-col items-center justify-center">
+          <HeroContent onScrollTo={scrollTo} />
         </div>
       </HeroSection>
     </>

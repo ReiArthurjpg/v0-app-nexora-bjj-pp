@@ -1,7 +1,7 @@
 export { BenefitSection } from './BenefitSection/controller/benefit-section'
 export { FeatureSection } from './FeatureSection/controller/feature-section'
 export { StepsSection } from './StepsSection/controller/steps-section'
-export { PricingSection } from './PricingSection'
+export { PricingSection } from './PricingSection/controller/pricing-section'
 export { MVPSection } from './MVPSection'
 export { ContactSection } from './ContactSection'
 export { DiffSection } from './DiffSection'

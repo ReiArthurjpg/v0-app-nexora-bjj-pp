@@ -1,9 +1,11 @@
 'use client'
 
-import { NexoraNavbar } from '@/feature/guest/site/components/NexoraHero/ui/NexoraNavbar'
-import { HeroSection } from '@/feature/guest/site/components/NexoraHero/ui/HeroSection'
-import { HeroContent } from '@/feature/guest/site/components/NexoraHero/ui/HeroContent'
-import { HeroVisual } from '@/feature/guest/site/components/NexoraHero/ui/HeroVisual'
+import {
+  NexoraNavbar,
+  HeroSection,
+  HeroContent,
+  HeroVisual
+} from '@/feature/guest/site/components/NexoraHero/ui'
 import { useHeroNavigation } from '@/feature/guest/site/components/NexoraHero/hooks/useHeroNavigation'
 
 export function NexoraHero() {

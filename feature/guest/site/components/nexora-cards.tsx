@@ -55,16 +55,28 @@ export function FeatureCard({ icon, title, description }: { icon: React.ReactNod
 
 export function StepCard({ number, icon, title, description }: { number: string; icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="cursor-pointer relative p-10 bg-[#0F0F11] border border-white/5 rounded-xl group hover:border-[#E11D48]/50 transition-all duration-500 overflow-hidden">
-      <div className="absolute -top-10 -right-10 text-[180px] font-black italic text-white/5 select-none pointer-events-none group-hover:text-[#E11D48]/10 transition-colors">
-        {number}
+    <div className="cursor-pointer relative p-10 bg-[#0F0F11]/50 border border-white/5 rounded-2xl group hover:border-[#E11D48]/30 transition-all duration-500 h-full">
+      {/* Indicador de Número Moderno */}
+      <div className="flex items-center gap-4 mb-8">
+        <span className="text-xl font-black italic text-[#E11D48] tracking-tighter bg-[#E11D48]/10 px-3 py-1 rounded border border-[#E11D48]/20 group-hover:bg-[#E11D48] group-hover:text-white transition-all duration-300">
+          {number}
+        </span>
+        <div className="h-px flex-grow bg-white/5 group-hover:bg-[#E11D48]/20 transition-colors" />
       </div>
+
       <div className="relative z-10">
-        <div className="w-16 h-16 bg-[#E11D48]/10 rounded-lg flex items-center justify-center text-[#E11D48] mb-8 border border-[#E11D48]/20 group-hover:bg-[#E11D48] group-hover:text-white transition-all duration-300">
+        <div className="text-white mb-6 group-hover:text-[#E11D48] transition-colors duration-300">
           {icon}
         </div>
-        <h4 className="text-3xl font-black uppercase italic tracking-tighter mb-4 text-white">{title}</h4>
-        <p className="text-gray-400 font-medium leading-relaxed">{description}</p>
+        <h4 className="text-2xl font-black uppercase italic tracking-tighter mb-4 text-white group-hover:translate-x-1 transition-transform">
+          {title}
+        </h4>
+        <p className="text-gray-400 font-medium leading-relaxed text-sm">{description}</p>
+      </div>
+
+      {/* Número Fantasma sutil ao fundo */}
+      <div className="absolute -bottom-6 -right-4 text-[120px] font-black italic text-white/[0.02] select-none pointer-events-none group-hover:text-[#E11D48]/[0.03] transition-colors">
+        {number}
       </div>
     </div>
   )

@@ -37,12 +37,18 @@ export function BenefitCard({
 
 export function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="cursor-pointer group p-8 bg-white/5 border border-white/5 rounded-2xl hover:border-[#E11D48]/50 hover:bg-white/10 transition-all duration-500 flex flex-col items-center text-center">
-      <div className="w-14 h-14 bg-[#E11D48] text-white rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-lg shadow-[#E11D48]/20">
+    <div className="cursor-pointer group p-8 bg-white/[0.03] border border-white/10 rounded-2xl hover:border-[#E11D48]/50 hover:bg-white/[0.06] transition-all duration-500 flex flex-col relative overflow-hidden h-full">
+      {/* Linha de destaque esquerda no hover */}
+      <div className="absolute left-0 top-0 h-full w-0.5 bg-gradient-to-b from-[#E11D48] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      {/* Brilho de canto no hover */}
+      <div className="absolute -top-10 -right-10 w-24 h-24 bg-[#E11D48]/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+      <div className="w-12 h-12 bg-[#E11D48]/10 text-[#E11D48] rounded-xl flex items-center justify-center mb-6 group-hover:bg-[#E11D48] group-hover:text-white transition-all duration-300 shadow-lg shadow-[#E11D48]/10 shrink-0">
         {icon}
       </div>
-      <h4 className="text-2xl font-black uppercase italic tracking-tighter mb-4 text-white">{title}</h4>
-      <p className="text-gray-400 text-sm leading-relaxed max-w-xs">{description}</p>
+      <h4 className="text-xl font-black uppercase italic tracking-tighter mb-3 text-white">{title}</h4>
+      <p className="text-gray-400 text-sm leading-relaxed">{description}</p>
     </div>
   )
 }

@@ -2,6 +2,7 @@ import {
   NexoraHero,
   BenefitSection,
   FeatureSection,
+  MiniContactSection,
   StepsSection,
   PricingSection,
   MVPSection,
@@ -15,6 +16,7 @@ export default function Home() {
       <NexoraHero />
       <BenefitSection />
       <FeatureSection />
+      <MiniContactSection />
       <StepsSection />
       <PricingSection />
       <MVPSection />

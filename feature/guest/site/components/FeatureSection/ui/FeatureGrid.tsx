@@ -61,7 +61,6 @@ export function FeatureGrid({ features }: { features: Feature[] }) {
         <p className="text-gray-500 text-sm font-bold uppercase tracking-widest">
           Todas as ferramentas, uma única plataforma
         </p>
-        <div className="w-12 h-px bg-[#E11D48]/40 hidden sm:block" />
         <button
           onClick={() => document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' })}
           className="px-8 py-3 bg-[#E11D48] text-white text-xs font-black uppercase tracking-widest italic -skew-x-6 hover:bg-[#BE123C] transition-all active:scale-95 shadow-[0_0_20px_rgba(225,29,72,0.3)] cursor-pointer"

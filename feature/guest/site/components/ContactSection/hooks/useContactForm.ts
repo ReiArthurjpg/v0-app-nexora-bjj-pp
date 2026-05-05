@@ -11,7 +11,21 @@ export function useContactForm() {
   })
 
   function handleChange(field: string, value: string) {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+    let formattedValue = value
+
+    if (field === 'whatsapp') {
+      const digits = value.replace(/\D/g, '')
+      if (digits.length <= 11) {
+        formattedValue = digits
+          .replace(/^(\d{2})(\d)/g, '($1) $2')
+          .replace(/(\d{5})(\d)/, '$1-$2')
+      } else {
+        formattedValue = digits.substring(0, 11)
+          .replace(/^(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
+      }
+    }
+
+    setFormData((prev) => ({ ...prev, [field]: formattedValue }))
   }
 
   function handleSubmit(e: React.FormEvent) {

@@ -141,15 +141,22 @@ export function PriceCard({ tier, price, description, features, featured = false
 
 export function MVPBlock({ icon, title, items }: { icon: React.ReactNode; title: string; items: string[] }) {
   return (
-    <div className="cursor-pointer p-6 border border-white/10 bg-white/5 rounded-lg hover:bg-white/10 transition-all">
-      <div className="flex items-center gap-3 mb-4 text-[#E11D48]">
-        {icon}
-        <h5 className="font-black uppercase italic tracking-tight text-white">{title}</h5>
+    <div className="cursor-pointer group p-8 border border-white/5 bg-white/[0.02] rounded-xl hover:bg-white/[0.05] hover:border-[#E11D48]/30 transition-all duration-500 relative overflow-hidden h-full">
+      {/* Linha Lateral de Ativação */}
+      <div className="absolute left-0 top-0 h-full w-1 bg-[#E11D48] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      
+      <div className="flex items-center gap-4 mb-6">
+        <div className="text-[#E11D48] group-hover:scale-110 transition-transform duration-300">
+          {icon}
+        </div>
+        <h5 className="font-black uppercase italic tracking-tight text-white text-lg">{title}</h5>
       </div>
-      <ul className="space-y-2">
+      
+      <ul className="space-y-3">
         {items.map((item, idx) => (
-          <li key={idx} className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase">
-            <div className="w-1 h-1 bg-[#E11D48] rounded-full" /> {item}
+          <li key={idx} className="flex items-center gap-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest group-hover:text-gray-300 transition-colors">
+            <div className="w-1.5 h-1.5 bg-[#E11D48]/50 rounded-full group-hover:bg-[#E11D48] transition-colors" /> 
+            {item}
           </li>
         ))}
       </ul>

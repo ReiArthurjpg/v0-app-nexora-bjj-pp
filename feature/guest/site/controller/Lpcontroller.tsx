@@ -3,6 +3,7 @@ import {
   BenefitSection,
   FeatureSection,
   MiniContactSection,
+  MiniSocialSection,
   StepsSection,
   PricingSection,
   MVPSection,
@@ -20,6 +21,7 @@ export default function Home() {
       <StepsSection />
       <PricingSection />
       <MVPSection />
+      <MiniSocialSection />
       <ContactSection />
       <DiffSection />
       <Footer />

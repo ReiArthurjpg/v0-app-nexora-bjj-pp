@@ -1,4 +1,4 @@
-import React from 'react'
+import ScrollVelocity from '@/components/react-bits/ScrollVelocity'
 
 export function MiniContactWrapper({ children }: { children: React.ReactNode }) {
   return (
@@ -10,11 +10,13 @@ export function MiniContactWrapper({ children }: { children: React.ReactNode }) 
       {/* Gradiente de Fundo — O "Sistema" em ação */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#E11D48] via-[#BE123C] to-[#070708] opacity-90" />
       
-      {/* Background Text sutil */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 select-none pointer-events-none opacity-20">
-        <span className="text-[10vw] font-black italic uppercase text-black leading-none tracking-tighter">
-          NEXORA SYSTEM
-        </span>
+      {/* Scroll Velocity Text — O efeito dinâmico */}
+      <div className="absolute inset-0 flex flex-col justify-center select-none pointer-events-none opacity-20 overflow-hidden">
+        <ScrollVelocity 
+          text="NEXORA SYSTEM • NEXORA BJJ • " 
+          velocity={2} 
+          className="text-black"
+        />
       </div>
 
       <div className="max-w-5xl mx-auto relative z-10">

@@ -8,7 +8,6 @@ import {
   PricingSection,
   MVPSection,
   ContactSection,
-  DiffSection,
   Footer,
 } from '@/feature/guest/site/components'
 export default function Home() {
@@ -23,7 +22,6 @@ export default function Home() {
       <MVPSection />
       <MiniSocialSection />
       <ContactSection />
-      <DiffSection />
       <Footer />
     </main>
   )

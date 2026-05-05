@@ -164,11 +164,4 @@ export function MVPBlock({ icon, title, items }: { icon: React.ReactNode; title:
   )
 }
 
-export function DiffItem({ text }: { text: string }) {
-  return (
-    <div className="flex items-center gap-3 text-center md:text-left">
-      <div className="w-2 h-2 bg-[#E11D48] rounded-full shrink-0" />
-      <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">{text}</span>
-    </div>
-  )
-}
+

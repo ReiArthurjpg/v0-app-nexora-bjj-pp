@@ -14,7 +14,7 @@ export function useLoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login: authLogin, isLoading: authLoading } = useAuth();
+  const { setSession, isLoading: authLoading } = useAuth();
 
   useEffect(() => {
     const error = searchParams.get('error');
@@ -35,9 +35,10 @@ export function useLoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     setIsSubmitting(true);
     try {
-      const result = await authLogin(data);
+      const result = await signinApi.login(data);
       
       if (result && result.accessToken) {
+        setSession(result.accessToken, result.user);
         toast.success('Login realizado com sucesso! Redirecionando...');
         router.push('/hub');
       } else {

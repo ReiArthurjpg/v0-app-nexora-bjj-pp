@@ -1,11 +1,10 @@
-import { LoginForm } from '@/feature/guest/login/signin/components/login-form';
-import { TestimonialsCarousel } from '@/feature/guest/login/signin/components/testimonials-carousel';
+import { LoginForm, TestimonialsCarousel } from '../components';
 import { MetricBox } from '@/feature/guest/login/shared/components';
 import { Users, Activity, Trophy } from 'lucide-react';
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen  bg-[#070708] text-white font-sans selection:bg-[#E11D48] selection:text-white flex overflow-hidden">
+    <div className="min-h-screen bg-[#070708] text-white font-sans selection:bg-[#E11D48] selection:text-white flex overflow-hidden">
       <LoginForm />
 
       <div className="hidden lg:flex lg:w-[55%] flex-col relative overflow-hidden bg-gradient-to-br from-[#070708] via-[#0F0F11] to-[#E11D48]/20 p-16 justify-center">
@@ -33,3 +32,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

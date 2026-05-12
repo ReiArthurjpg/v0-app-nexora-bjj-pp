@@ -1,42 +1,21 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
 
-const testimonials = [
-  {
-    date: "12 de Outubro de 2023",
-    stars: 5,
-    text: "O Nexora mudou a forma como controlo minhas aulas de NoGi. A graduação automática é surreal e me poupa horas de planilha.",
-    author: "RICARDO 'PANTUFA' SILVA",
-    academy: "GRACIE BARRA MATRIZ"
-  },
-  {
-    date: "05 de Janeiro de 2024",
-    stars: 5,
-    text: "Sistema impecável. A interface é rápida e o suporte entende de Jiu-Jitsu, não são apenas programadores.",
-    author: "MESTRE FLÁVIO ALMEIDA",
-    academy: "ALLIANCE SP"
-  },
-  {
-    date: "20 de Fevereiro de 2024",
-    stars: 5,
-    text: "Meus alunos adoram ver o progresso dos graus no app. A retenção da minha academia subiu 25% em 3 meses.",
-    author: "CARLOS 'CAIÇARA'",
-    academy: "CHECKMAT TEAM"
-  }
-];
+interface Testimonial {
+  date: string;
+  stars: number;
+  text: string;
+  author: string;
+  academy: string;
+}
 
-export function TestimonialsCarousel() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+interface CarouselContentProps {
+  testimonials: Testimonial[];
+  currentSlide: number;
+  setCurrentSlide: (fn: (prev: number) => number) => void;
+  totalSlides: number;
+}
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
+export function CarouselContent({ testimonials, currentSlide, setCurrentSlide, totalSlides }: CarouselContentProps) {
   return (
     <div className="relative mb-20 group">
       <div className="grid md:grid-cols-2 gap-6">
@@ -53,7 +32,7 @@ export function TestimonialsCarousel() {
             </div>
             <Quote size={32} className="text-[#E11D48] mb-4 opacity-50" />
             <p className="text-lg font-bold italic text-white/90 leading-relaxed mb-8">
-              "{item.text}"
+              &quot;{item.text}&quot;
             </p>
             <div className="pt-6 border-t border-white/10">
               <p className="font-black italic text-[#E11D48] tracking-tighter uppercase">{item.author}</p>
@@ -66,7 +45,7 @@ export function TestimonialsCarousel() {
       {/* Controles do Carrossel */}
       <div className="flex items-center gap-4 mt-8">
         <button 
-          onClick={() => setCurrentSlide(prev => (prev - 1 + testimonials.length) % testimonials.length)}
+          onClick={() => setCurrentSlide(prev => (prev - 1 + totalSlides) % totalSlides)}
           className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#E11D48] transition-all"
         >
           <ChevronLeft size={20} />
@@ -83,14 +62,14 @@ export function TestimonialsCarousel() {
         </div>
 
         <button 
-          onClick={() => setCurrentSlide(prev => (prev + 1) % testimonials.length)}
+          onClick={() => setCurrentSlide(prev => (prev + 1) % totalSlides)}
           className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-[#E11D48] transition-all"
         >
           <ChevronRight size={20} />
         </button>
         
         <span className="text-[10px] font-black text-gray-500 ml-4 uppercase tracking-[0.3em]">
-          {currentSlide + 1} DE {testimonials.length}
+          {currentSlide + 1} DE {totalSlides}
         </span>
       </div>
     </div>

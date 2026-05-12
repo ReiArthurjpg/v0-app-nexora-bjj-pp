@@ -1,12 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
-export default function AuthCallbackPage() {
+function AuthCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -33,5 +34,20 @@ export default function AuthCallbackPage() {
         Por favor, aguarde enquanto validamos sua conta...
       </p>
     </div>
+  );
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#070708] flex flex-col items-center justify-center text-white p-8">
+        <Loader2 className="animate-spin text-[#E11D48] mb-4" size={48} />
+        <h1 className="text-xl font-black uppercase italic tracking-tighter mb-2">
+          CARREGANDO...
+        </h1>
+      </div>
+    }>
+      <AuthCallbackContent />
+    </Suspense>
   );
 }

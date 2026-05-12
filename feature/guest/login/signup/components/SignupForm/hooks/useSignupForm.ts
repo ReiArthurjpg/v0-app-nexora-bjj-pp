@@ -27,7 +27,7 @@ export function useSignupForm() {
       
       if (result && (result.success || result.id)) {
         toast.success('Conta criada com sucesso! Faça login para começar.');
-        router.push('/login');
+        router.push('/guest/login');
       } else {
         toast.error(result?.message || 'Erro ao criar conta. Verifique os dados e tente novamente.');
       }

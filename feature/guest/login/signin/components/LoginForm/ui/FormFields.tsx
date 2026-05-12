@@ -65,7 +65,7 @@ export function FormFields({
           <input type="checkbox" className="w-4 h-4 bg-white/5 border-white/10 rounded accent-[#E11D48]" />
           <span className="text-gray-500 group-hover:text-white transition-colors">Lembrar de mim</span>
         </label>
-        <button type="button" onClick={() => router.push('/forgot-password')} className="text-[#E11D48] cursor-pointer hover:underline italic">Esqueceu sua senha?</button>
+        <button type="button" onClick={() => router.push('/guest/forgot-password')} className="text-[#E11D48] cursor-pointer hover:underline italic">Esqueceu sua senha?</button>
       </div>
 
       <button 

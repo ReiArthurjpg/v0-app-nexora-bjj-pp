@@ -75,7 +75,7 @@ export function NexoraNavbar({
           </div>
 
           <a
-            href="/login"
+            href="/guest/login"
             className="inline-flex items-center px-7 py-3 bg-white text-black text-[10px] font-black uppercase tracking-[0.25em] italic -skew-x-6 hover:bg-[#E11D48] hover:text-white transition-all duration-300 active:scale-95 shadow-lg"
           >
             <span className="skew-x-6">Login</span>
@@ -127,7 +127,7 @@ export function NexoraNavbar({
 
             <div className="mt-auto pt-8">
               <a
-                href="/login"
+                href="/guest/login"
                 className="w-full flex justify-center items-center py-4 bg-[#E11D48] text-white font-black uppercase tracking-widest italic -skew-x-6"
               >
                 <span className="skew-x-6">Login</span>

@@ -235,7 +235,7 @@ export function SignupFields({ form, isSubmitting, showPassword, setShowPassword
 
       <div className="mt-8 text-center">
         <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-          Já possui uma conta? <button type="button" onClick={() => router.push('/login')} className="text-white font-black hover:text-[#E11D48] ml-1 transition-colors italic uppercase">Fazer Login</button>
+          Já possui uma conta? <button type="button" onClick={() => router.push('/guest/login')} className="text-white font-black hover:text-[#E11D48] ml-1 transition-colors italic uppercase">Fazer Login</button>
         </p>
       </div>
     </form>

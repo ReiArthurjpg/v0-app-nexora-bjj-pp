@@ -23,7 +23,7 @@ export function ForgotPasswordHeader({ isSubmitting }: ForgotPasswordHeaderProps
       </header>
 
       <button 
-        onClick={() => router.push('/login')}
+        onClick={() => router.push('/guest/login')}
         disabled={isSubmitting}
         className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors mb-10 text-[10px] font-black uppercase tracking-widest group disabled:opacity-50"
       >

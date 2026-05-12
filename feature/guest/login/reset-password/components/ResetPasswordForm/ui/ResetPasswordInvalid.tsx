@@ -17,7 +17,7 @@ export function ResetPasswordInvalid() {
         Este link de recuperação não é mais válido ou já foi utilizado.
       </p>
       <button 
-        onClick={() => router.push('/forgot-password')}
+        onClick={() => router.push('/guest/forgot-password')}
         className="bg-[#E11D48] hover:bg-white hover:text-black px-8 py-4 rounded font-black text-[10px] uppercase tracking-widest transition-all"
       >
         Solicitar novo link

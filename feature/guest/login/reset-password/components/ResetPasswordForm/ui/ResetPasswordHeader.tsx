@@ -14,7 +14,7 @@ export function ResetPasswordHeader({ isSubmitting }: ResetPasswordHeaderProps) 
   return (
     <div className="mb-10">
       <button 
-        onClick={() => router.push('/login')}
+        onClick={() => router.push('/guest/login')}
         disabled={isSubmitting}
         className="flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest mb-6 group disabled:opacity-50"
       >

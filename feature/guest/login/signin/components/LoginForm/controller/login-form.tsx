@@ -67,7 +67,7 @@ export function LoginForm() {
             <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
               Não tem uma conta?{' '}
               <button
-                onClick={() => router.push('/signup')}
+                onClick={() => router.push('/guest/signup')}
                 className="cursor-pointer text-white hover:text-[#E11D48] ml-1 uppercase font-black italic transition-colors duration-200"
               >
                 Criar conta

@@ -7,12 +7,12 @@ export function middleware(request: NextRequest) {
   // Protect /hub and any other private routes
   if (request.nextUrl.pathname.startsWith('/hub')) {
     if (!token) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      return NextResponse.redirect(new URL('/guest/login', request.url));
     }
   }
 
-  // Optional: Redirect authenticated users away from /login
-  if (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup')) {
+  // Optional: Redirect authenticated users away from /guest/login
+  if (request.nextUrl.pathname.startsWith('/guest/login') || request.nextUrl.pathname.startsWith('/guest/signup')) {
       if (token) {
           return NextResponse.redirect(new URL('/hub', request.url));
       }
@@ -22,5 +22,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/hub/:path*', '/login', '/signup'],
+  matcher: ['/hub/:path*', '/guest/login', '/guest/signup'],
 };

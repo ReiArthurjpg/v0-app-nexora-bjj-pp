@@ -52,7 +52,7 @@ export function useResetPasswordForm(token: string) {
       if (result && (result.success || result.message)) {
         toast.success('Senha atualizada com sucesso! Faça login com a nova senha.');
         Cookies.remove('nexora_token');
-        router.push('/login');
+        router.push('/guest/login');
       } else {
         toast.error(result?.message || 'Não foi possível redefinir sua senha.');
       }

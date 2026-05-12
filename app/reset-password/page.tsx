@@ -1,4 +1,4 @@
-import { ResetPasswordForm } from '@/components/reset-password-form';
+import ResetPasswordForm from '@/feature/guest/login/reset-password';
 import { redirect } from 'next/navigation';
 
 export default async function ResetPasswordPage({ 

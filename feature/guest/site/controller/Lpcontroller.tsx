@@ -2,12 +2,11 @@ import {
   NexoraHero,
   BenefitSection,
   FeatureSection,
-  MiniContactSection,
-  MiniSocialSection,
   StepsSection,
   PricingSection,
   MVPSection,
   ContactSection,
+  DiffSection,
   Footer,
 } from '@/feature/guest/site/components'
 export default function Home() {
@@ -16,12 +15,11 @@ export default function Home() {
       <NexoraHero />
       <BenefitSection />
       <FeatureSection />
-      <MiniContactSection />
       <StepsSection />
       <PricingSection />
       <MVPSection />
-      <MiniSocialSection />
       <ContactSection />
+      <DiffSection />
       <Footer />
     </main>
   )

@@ -1,7 +1,6 @@
 import { Mail, Lock, Eye, EyeOff, ChevronRight, Loader2 } from 'lucide-react';
 import { UseFormRegister, FieldErrors } from 'react-hook-form';
 import { LoginFormData } from '../../../schemas/login.schema';
-import DecryptedText from '@/components/react-bits/DecryptedText';
 
 interface FormFieldsProps {
   register: UseFormRegister<LoginFormData>;
@@ -77,17 +76,7 @@ export function FormFields({
         {isLoading ? (
           <>ENVIANDO... <Loader2 className="animate-spin" size={20} /></>
         ) : (
-          <div className="flex items-center gap-2">
-            <DecryptedText
-              text="ENTRAR"
-              speed={40}
-              maxIterations={10}
-              animateOn="view"
-              className="font-black text-lg uppercase italic tracking-tighter"
-              encryptedClassName="text-white/20"
-            />
-            <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" strokeWidth={3} />
-          </div>
+          <>ENTRAR <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" strokeWidth={3} /></>
         )}
       </button>
     </div>

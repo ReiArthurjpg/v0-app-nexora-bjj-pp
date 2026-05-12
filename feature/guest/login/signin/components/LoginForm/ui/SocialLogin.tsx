@@ -1,5 +1,3 @@
-import DecryptedText from '@/components/react-bits/DecryptedText';
-
 interface SocialLoginProps {
   isLoading: boolean;
   handleGoogleLogin: () => Promise<void>;
@@ -33,14 +31,7 @@ export function SocialLogin({ isLoading, handleGoogleLogin }: SocialLoginProps) 
             fill="#EA4335"
           />
         </svg>
-        <DecryptedText
-          text="Google Account"
-          speed={50}
-          maxIterations={10}
-          animateOn="view"
-          className="text-xs font-black uppercase tracking-widest text-gray-300"
-          encryptedClassName="text-white/20"
-        />
+        <span className="text-xs font-black uppercase tracking-widest text-gray-300">Google Account</span>
       </button>
     </div>
   );

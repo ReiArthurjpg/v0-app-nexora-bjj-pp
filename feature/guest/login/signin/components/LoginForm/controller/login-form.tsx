@@ -15,13 +15,17 @@ export function LoginForm() {
   } = useLoginForm();
 
   return (
-    <div className="w-full lg:w-[45%] flex  flex-col relative z-10 bg-[#070708] border-r border-white/5">
+    <div className="w-full lg:w-[45%] flex flex-col relative z-10 bg-[#070708] border-r border-white/5 min-h-screen">
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
       
-      <FormHeader />
-
-      <main className="flex-grow flex items-center justify-end px-8 md:px-16 pb-12">
+      <main className="flex-grow flex flex-col items-end justify-center gap-12 pl-8 pr-4 md:pl-16 md:pr-8 py-12">
+        {/* Topo: Logo */}
         <div className="w-full max-w-md">
+          <FormHeader />
+        </div>
+
+        {/* Meio: Formulário */}
+        <div className="w-full max-w-md my-8">
           <div className="mb-10">
             <h1 className="text-4xl font-black italic uppercase tracking-tighter mb-2">
               ACESSE SUA <span className="text-[#E11D48]">CONTA</span>
@@ -65,13 +69,14 @@ export function LoginForm() {
             </p>
           </div>
         </div>
-      </main>
 
-      <footer className="p-8 flex justify-center gap-8 opacity-30 text-[9px] font-black uppercase tracking-widest">
-        <a href="#" className="cursor-not-allowed text-white">Privacidade</a>
-        <a href="#" className="cursor-not-allowed text-white">Suporte</a>
-        <a href="#" className="cursor-not-allowed text-white">Termos de Uso</a>
-      </footer>
+        {/* Bottom: Footer */}
+        <footer className="w-full max-w-md flex justify-center gap-8 opacity-30 text-[9px] font-black uppercase tracking-widest">
+          <a href="#" className="cursor-not-allowed text-white">Privacidade</a>
+          <a href="#" className="cursor-not-allowed text-white">Suporte</a>
+          <a href="#" className="cursor-not-allowed text-white">Termos de Uso</a>
+        </footer>
+      </main>
     </div>
   );
 }

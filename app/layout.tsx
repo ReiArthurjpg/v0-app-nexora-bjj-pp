@@ -11,7 +11,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'NEXORA BJJ - Sistema de Gestão para Academias',
+  title: 'NEXORA BJJ',
   description: 'O único sistema de gestão desenhado exclusivamente para a rotina do Jiu-Jitsu. Controle graduações, presenças e mensalidades.',
   generator: 'v0.app',
   icons: {
@@ -33,6 +33,9 @@ export const metadata: Metadata = {
   },
 }
 
+import { AuthProvider } from '@/context/AuthContext'
+import { Toaster } from '@/components/ui/sonner'
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,8 +43,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${jakarta.variable} font-sans antialiased`}>
-        {children}
+      <body className={`${jakarta.variable} font-sans antialiased text-white`}>
+        <AuthProvider>
+          {children}
+          <Toaster richColors position="top-right" />
+        </AuthProvider>
         <Analytics />
       </body>
     </html>

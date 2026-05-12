@@ -11,7 +11,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'NEXORA BJJ - Sistema de Gestão para Academias',
+  title: 'NEXORA BJJ',
   description: 'O único sistema de gestão desenhado exclusivamente para a rotina do Jiu-Jitsu. Controle graduações, presenças e mensalidades.',
   generator: 'v0.app',
   icons: {

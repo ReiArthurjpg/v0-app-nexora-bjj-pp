@@ -10,7 +10,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (data: any) => Promise<any>;
+  setSession: (token: string, user: User) => void;
   logout: () => void;
   signup: (data: any) => Promise<any>;
   updateProfile: (data: any) => Promise<any>;
@@ -58,18 +58,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loadUser();
   }, [router]);
 
-  const login = async (data: any) => {
-    setIsLoading(true);
-    try {
-      const response = await authService.login(data);
-      if (response.accessToken) {
-        Cookies.set('nexora_token', response.accessToken, { expires: 1 }); // expires in 1 day
-        setUser(response.user);
-      }
-      return response;
-    } finally {
-      setIsLoading(false);
-    }
+  const setSession = (token: string, user: User) => {
+    Cookies.set('nexora_token', token, { expires: 1 });
+    setUser(user);
   };
 
   const logout = () => {
@@ -92,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const isAuthenticated = !!user;
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, isAuthenticated, login, logout, signup, updateProfile }}>
+    <AuthContext.Provider value={{ user, isLoading, isAuthenticated, setSession, logout, signup, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

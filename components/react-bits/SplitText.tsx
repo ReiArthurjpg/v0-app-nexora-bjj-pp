@@ -9,9 +9,9 @@ interface SplitTextProps {
   delay?: number;
   animationFrom?: { opacity: number; transform: string };
   animationTo?: { opacity: number; transform: string };
-  easing?: string;
+  easing?: any;
   threshold?: number;
-  rootMargin?: string;
+  rootMargin?: any;
   textAlign?: 'left' | 'right' | 'center' | 'justify' | 'initial' | 'inherit';
   onLetterAnimationComplete?: () => void;
 }

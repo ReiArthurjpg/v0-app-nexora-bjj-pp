@@ -48,7 +48,7 @@ export function AlunosManagement() {
     }));
   });
 
-  const beltColors = {
+  const beltColors: Record<string, string> = {
     "Branca": "bg-white text-black",
     "Azul": "bg-blue-600 text-white",
     "Roxa": "bg-purple-700 text-white",

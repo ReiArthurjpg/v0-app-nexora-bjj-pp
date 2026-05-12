@@ -29,27 +29,24 @@ import {
   Settings,
   DollarSign,
   MonitorPlay,
-  History,
-  LogOut
+  History
 } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
 
 export function NexoraHub() {
   const router = useRouter();
-  const { user, logout } = useAuth();
   const [currentModule, setCurrentModule] = useState('dashboard');
   const [lastAccessedModule, setLastAccessedModule] = useState('alunos');
   const [currentTournamentSlide, setCurrentTournamentSlide] = useState(0);
   const [currentBannerSlide, setCurrentBannerSlide] = useState(0);
   const [currentPartnerSlide, setCurrentPartnerSlide] = useState(0);
-  
-  // Dados do usuário (integrados com AuthContext)
+
+  // Dados do usuário
   const userData = {
-    name: user?.name || "Visitante",
-    role: "Diretor Técnico", // Pode ser estendido se o backend retornar a role
-    academy: "Alliance BJJ", // Pode ser estendido se o backend retornar a academia
-    initials: user?.name?.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || "??",
-    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'U')}&background=E11D48&color=fff`
+    name: "Mestre Admin",
+    role: "Diretor Técnico",
+    academy: "Alliance BJJ",
+    initials: "MA",
+    avatar: "https://ui-avatars.com/api/?name=MA&background=E11D48&color=fff"
   };
 
   // Módulos do Sistema
@@ -182,13 +179,6 @@ export function NexoraHub() {
               </div>
               <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-[#00FF00] border-4 border-[#070708] rounded-full"></div>
             </div>
-            <button 
-              onClick={logout}
-              className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-red-500/10 hover:border-red-500/50 transition-all text-gray-400 hover:text-red-500 group"
-              title="Sair do Sistema"
-            >
-              <LogOut size={20} className="group-hover:translate-x-1 transition-transform" />
-            </button>
           </div>
         </div>
       </header>

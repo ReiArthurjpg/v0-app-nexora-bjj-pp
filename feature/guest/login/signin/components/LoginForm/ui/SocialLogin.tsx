@@ -1,6 +1,6 @@
 interface SocialLoginProps {
   isLoading: boolean;
-  handleGoogleLogin: () => Promise<void>;
+  handleGoogleLogin: () => void;
 }
 
 export function SocialLogin({ isLoading, handleGoogleLogin }: SocialLoginProps) {

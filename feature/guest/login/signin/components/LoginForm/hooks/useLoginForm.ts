@@ -52,18 +52,8 @@ export function useLoginForm() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      const result = await signinApi.getGoogleAuthUrl();
-      if (result && result.url) {
-        window.location.href = result.url;
-      } else {
-        toast.error('O servidor não retornou uma URL do Google.');
-      }
-    } catch (error: any) {
-      console.error('Google link error:', error);
-      toast.error('Erro ao conectar com Google. O servidor está online?');
-    }
+  const handleGoogleLogin = () => {
+    signinApi.redirectToGoogle();
   };
 
   return {

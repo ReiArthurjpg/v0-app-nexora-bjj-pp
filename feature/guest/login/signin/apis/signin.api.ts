@@ -6,7 +6,7 @@ export const signinApi = {
     return await authService.login(data);
   },
 
-  getGoogleAuthUrl: async () => {
-    return await authService.getGoogleAuthUrl();
+  redirectToGoogle: () => {
+    authService.redirectToGoogle();
   }
 };

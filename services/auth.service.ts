@@ -82,9 +82,9 @@ export const authService = {
     return response.json();
   },
 
-  async getGoogleAuthUrl(): Promise<{ url: string }> {
-    const response = await fetchApi('/auth/google');
-    return response.json();
+  redirectToGoogle(): void {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+    window.location.href = `${apiUrl}/auth/google`;
   },
   
   async updateProfile(data: any): Promise<any> {

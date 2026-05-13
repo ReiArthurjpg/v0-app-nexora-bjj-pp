@@ -1,6 +1,13 @@
 import Cookies from 'js-cookie';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+// No browser: usa /nexora-api (proxy do Next.js → sem CORS)
+// No servidor (SSR): usa a URL direta da API
+function getBaseUrl(): string {
+  if (typeof window !== 'undefined') {
+    return '/nexora-api';
+  }
+  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+}
 
 export async function fetchApi(endpoint: string, options: RequestInit = {}) {
   const token = Cookies.get('nexora_token');
@@ -17,7 +24,7 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
     headers,
   };
 
-  const response = await fetch(`${API_URL}${endpoint}`, config);
+  const response = await fetch(`${getBaseUrl()}${endpoint}`, config);
 
   if (response.status === 401) {
     Cookies.remove('nexora_token');

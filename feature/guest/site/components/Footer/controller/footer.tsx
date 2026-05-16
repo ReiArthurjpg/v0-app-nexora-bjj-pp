@@ -6,12 +6,12 @@ import {
   FooterBrand, 
   FooterLinks, 
   FooterBottom, 
-  ScrollToTop, 
   MobileCTA 
 } from '../ui'
+import { ChatAssistant } from '@/feature/system/chat'
 
 export function Footer() {
-  const { showScrollTop, scrollToTop, footerLinks } = useFooter()
+  const { footerLinks } = useFooter()
 
   return (
     <>
@@ -21,7 +21,7 @@ export function Footer() {
         <FooterBottom />
       </FooterWrapper>
 
-      <ScrollToTop show={showScrollTop} onClick={scrollToTop} />
+      <ChatAssistant />
       <MobileCTA />
     </>
   )

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bot, X } from 'lucide-react';
+import { Headset, X } from 'lucide-react';
 
 interface ChatButtonProps {
   isOpen: boolean;
@@ -16,7 +16,7 @@ export function ChatButton({ isOpen, onClick }: ChatButtonProps) {
       {isOpen ? (
         <X size={24} strokeWidth={2.5} className="animate-in fade-in zoom-in duration-300" />
       ) : (
-        <Bot size={24} strokeWidth={2.5} className="animate-in fade-in zoom-in duration-300 group-hover:rotate-12 transition-transform" />
+        <Headset size={24} strokeWidth={2.5} className="animate-in fade-in zoom-in duration-300 group-hover:rotate-12 transition-transform" />
       )}
     </button>
   );

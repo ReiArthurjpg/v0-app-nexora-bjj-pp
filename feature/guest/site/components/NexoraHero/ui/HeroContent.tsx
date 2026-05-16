@@ -1,3 +1,4 @@
+'use client'
 import { motion } from 'framer-motion';
 import SplitText from '@/components/react-bits/SplitText';
 import BlurIn from '@/components/react-bits/BlurIn';

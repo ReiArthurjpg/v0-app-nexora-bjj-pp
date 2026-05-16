@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, User, Bot, Loader2 } from 'lucide-react';
+import { Send, User, Headset, Loader2 } from 'lucide-react';
 import { Message } from '../types/chat.types';
 
 interface ChatWindowProps {
@@ -35,10 +35,10 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
       <div className="p-6 border-b border-white/5 bg-gradient-to-r from-[#E11D48]/10 to-transparent">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-[#E11D48] rounded-xl flex items-center justify-center shadow-lg">
-            <Bot size={20} className="text-white" />
+            <Headset size={20} className="text-white" />
           </div>
           <div>
-            <h3 className="text-sm font-black uppercase tracking-tighter italic">Nexora <span className="text-[#E11D48]">AI</span></h3>
+            <h3 className="text-sm font-black uppercase tracking-tighter italic">Nexora <span className="text-[#E11D48]">Suporte</span></h3>
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
               <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Online Agora</span>
@@ -58,7 +58,7 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                 msg.role === 'user' ? 'bg-white/10' : 'bg-[#E11D48]/20'
               }`}>
-                {msg.role === 'user' ? <User size={14} /> : <Bot size={14} className="text-[#E11D48]" />}
+                {msg.role === 'user' ? <User size={14} /> : <Headset size={14} className="text-[#E11D48]" />}
               </div>
               <div className={`p-4 rounded-2xl text-xs leading-relaxed font-medium italic ${
                 msg.role === 'user' 
@@ -74,7 +74,7 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
           <div className="flex justify-start">
             <div className="flex gap-3">
               <div className="w-8 h-8 rounded-lg bg-[#E11D48]/20 flex items-center justify-center">
-                <Bot size={14} className="text-[#E11D48]" />
+                <Headset size={14} className="text-[#E11D48]" />
               </div>
               <div className="p-4 rounded-2xl bg-white/5 border border-white/5 text-gray-400">
                 <Loader2 size={14} className="animate-spin" />

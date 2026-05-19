@@ -35,6 +35,7 @@ export const metadata: Metadata = {
 
 import { AuthProvider } from '@/context/AuthContext'
 import { Toaster } from '@/components/ui/sonner'
+import { ChatAssistant } from '@/feature/system/chat'
 
 export default function RootLayout({
   children,
@@ -47,6 +48,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
           <Toaster richColors position="top-right" />
+          <ChatAssistant />
         </AuthProvider>
         <Analytics />
       </body>

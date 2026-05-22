@@ -6,6 +6,7 @@ import { Message } from '../types/chat.types';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { ChatLoginForm } from './ChatLoginForm';
+import { ChatSignupForm } from './ChatSignupForm';
 interface ChatWindowProps {
   messages: Message[];
   isLoading: boolean;
@@ -94,6 +95,11 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
                   {msg.action === 'show_login_form' && (
                     <div className="mt-3">
                       <ChatLoginForm onSuccess={() => console.log('Login success from chat')} />
+                    </div>
+                  )}
+                  {msg.action === 'show_signup_form' && (
+                    <div className="mt-3">
+                      <ChatSignupForm onSuccess={() => console.log('Signup success from chat')} />
                     </div>
                   )}
                 </div>

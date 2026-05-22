@@ -3,6 +3,7 @@ export interface Message {
   role: 'user' | 'model' | 'system';
   content: string;
   timestamp: number;
+  action?: string;
 }
 
 export interface ChatState {
@@ -17,6 +18,7 @@ export interface ChatResponse {
   data: {
     answer: string;
     provider: string;
+    action?: string;
     context_documents?: string[];
     error?: string;
   };

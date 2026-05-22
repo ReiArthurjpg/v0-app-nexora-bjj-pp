@@ -4,7 +4,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, User, Headset, Loader2 } from 'lucide-react';
 import { Message } from '../types/chat.types';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import ReactMarkdown from 'react-markdown';
+import { ChatLoginForm } from './ChatLoginForm';
 interface ChatWindowProps {
   messages: Message[];
   isLoading: boolean;
@@ -78,7 +79,23 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
                     ? 'bg-gradient-to-br from-[#E11D48] to-[#BE123C] text-white rounded-tr-sm' 
                     : 'bg-[#18181B] text-gray-200 border border-white/5 rounded-tl-sm'
                 }`}>
-                  {msg.content}
+                  <div className="prose prose-sm text-gray-200">
+                    <ReactMarkdown
+                      components={{
+                        a: ({node, ...props}) => (
+                          <a className="text-blue-500 underline" {...props} />
+                        ),
+                      }}
+                    >
+                      {msg.content}
+                    </ReactMarkdown>
+                  </div>
+                  
+                  {msg.action === 'show_login_form' && (
+                    <div className="mt-3">
+                      <ChatLoginForm onSuccess={() => console.log('Login success from chat')} />
+                    </div>
+                  )}
                 </div>
               </div>
             </motion.div>

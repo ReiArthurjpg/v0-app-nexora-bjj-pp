@@ -9,7 +9,7 @@ export default async function ResetPasswordPage({
   const { token } = await searchParams;
 
   if (!token) {
-    redirect('/login');
+    redirect('/guest/login');
   }
 
   return <ResetPasswordForm token={token} />;

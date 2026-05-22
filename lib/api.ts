@@ -31,8 +31,8 @@ export async function fetchApi(endpoint: string, options: RequestInit & { baseUr
 
   if (response.status === 401) {
     Cookies.remove('nexora_token');
-    if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/login')) {
-      window.location.href = '/login';
+    if (typeof window !== 'undefined' && !window.location.pathname.startsWith('/guest/login')) {
+      window.location.href = '/guest/login';
     }
     throw new Error('Unauthorized');
   }

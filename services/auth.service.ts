@@ -57,7 +57,7 @@ export const authService = {
     await fetchApi('/auth/logout', { method: 'POST' });
     Cookies.remove('nexora_token');
     if (typeof window !== 'undefined') {
-      window.location.href = '/login';
+      window.location.href = '/guest/login';
     }
   },
 

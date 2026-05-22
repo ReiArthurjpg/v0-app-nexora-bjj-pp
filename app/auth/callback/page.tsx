@@ -20,7 +20,7 @@ function AuthCallbackContent() {
       router.push('/hub');
     } else {
       toast.error('Token de autenticação não encontrado.');
-      router.push('/login');
+      router.push('/guest/login');
     }
   }, [token, router]);
 

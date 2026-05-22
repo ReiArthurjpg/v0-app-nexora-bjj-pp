@@ -49,6 +49,7 @@ export function useChat() {
         role: 'model',
         content: response.data.answer,
         timestamp: Date.now(),
+        action: response.data.action,
       };
 
       setState(prev => ({

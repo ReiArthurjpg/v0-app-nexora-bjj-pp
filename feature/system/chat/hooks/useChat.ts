@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 export function useChat() {
   const { user } = useAuth();
-  const sessionId = user?.id || 'guest_session';
+  const sessionId = user?.id ? String(user.id) : 'guest_session';
 
   const [state, setState] = useState<ChatState>({
     messages: [

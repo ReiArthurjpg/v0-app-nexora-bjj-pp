@@ -6,7 +6,7 @@ import { ChatButton, ChatWindow, ChatNotification } from '../ui';
 import { AnimatePresence } from 'framer-motion';
 
 export default function ChatAssistant() {
-  const { isOpen, messages, isLoading, toggleChat, sendMessage } = useChat();
+  const { isOpen, messages, isLoading, toggleChat, sendMessage, addBotMessage } = useChat();
   const [showNotification, setShowNotification] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [resetTrigger, setResetTrigger] = useState(0);
@@ -59,6 +59,7 @@ export default function ChatAssistant() {
         messages={messages} 
         isLoading={isLoading} 
         onSendMessage={sendMessage} 
+        onBotMessage={addBotMessage}
       />
     </>
   );

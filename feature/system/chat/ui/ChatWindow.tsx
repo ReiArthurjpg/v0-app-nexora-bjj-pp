@@ -15,9 +15,10 @@ interface ChatWindowProps {
   isLoading: boolean;
   isOpen: boolean;
   onSendMessage: (content: string) => void;
+  onBotMessage?: (content: string) => void;
 }
 
-export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatWindowProps) {
+export function ChatWindow({ messages, isLoading, isOpen, onSendMessage, onBotMessage }: ChatWindowProps) {
   const [input, setInput] = useState('');
   const [currentMenu, setCurrentMenu] = useState<'main' | 'auth'>('main');
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -126,17 +127,17 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
                   
                   {msg.action === 'show_login_form' && (
                     <div className="mt-3">
-                      <ChatLoginForm onSuccess={() => console.log('Login success from chat')} onLoadingChange={handleFormLoadingChange} />
+                      <ChatLoginForm onSuccess={() => console.log('Login success from chat')} onLoadingChange={handleFormLoadingChange} onBotMessage={onBotMessage} />
                     </div>
                   )}
                   {msg.action === 'show_signup_form' && (
                     <div className="mt-3">
-                      <ChatSignupForm onSuccess={() => console.log('Signup success from chat')} onLoadingChange={handleFormLoadingChange} />
+                      <ChatSignupForm onSuccess={() => console.log('Signup success from chat')} onLoadingChange={handleFormLoadingChange} onBotMessage={onBotMessage} />
                     </div>
                   )}
                   {msg.action === 'show_forgot_password_form' && (
                     <div className="mt-3">
-                      <ChatForgotPasswordForm onSuccess={() => console.log('Forgot password success from chat')} onLoadingChange={handleFormLoadingChange} />
+                      <ChatForgotPasswordForm onSuccess={() => console.log('Forgot password success from chat')} onLoadingChange={handleFormLoadingChange} onBotMessage={onBotMessage} />
                     </div>
                   )}
                 </div>

@@ -9,9 +9,10 @@ import { authService } from '@/services/auth.service';
 interface ChatLoginFormProps {
   onSuccess?: () => void;
   onLoadingChange?: (loading: boolean) => void;
+  onBotMessage?: (message: string) => void;
 }
 
-export function ChatLoginForm({ onSuccess, onLoadingChange }: ChatLoginFormProps) {
+export function ChatLoginForm({ onSuccess, onLoadingChange, onBotMessage }: ChatLoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -31,14 +32,28 @@ export function ChatLoginForm({ onSuccess, onLoadingChange }: ChatLoginFormProps
       const response = await authService.login({ email, password });
       if (response && response.accessToken) {
         setSession(response.accessToken, response.user);
-        toast.success('Login realizado com sucesso!');
+        if (onBotMessage) {
+          onBotMessage('✅ Login realizado com sucesso! Redirecionando...');
+        } else {
+          toast.success('Login realizado com sucesso!');
+        }
         if (onSuccess) onSuccess();
         router.push('/hub');
       } else {
-        toast.error(response?.message || 'Credenciais inválidas. Tente novamente.');
+        const errorMsg = response?.message || 'Credenciais inválidas. Tente novamente.';
+        if (onBotMessage) {
+          onBotMessage('❌ ' + errorMsg);
+        } else {
+          toast.error(errorMsg);
+        }
       }
     } catch (error: any) {
-      toast.error(error.message || 'Erro ao realizar login');
+      const errorMsg = error.message || 'Erro ao realizar login';
+      if (onBotMessage) {
+        onBotMessage('❌ ' + errorMsg);
+      } else {
+        toast.error(errorMsg);
+      }
     } finally {
       setIsLoading(false);
       onLoadingChange?.(false);

@@ -62,9 +62,23 @@ export function useChat() {
     }
   }, []);
 
+  const addBotMessage = useCallback((content: string) => {
+    const botMessage: Message = {
+      id: Date.now().toString(),
+      role: 'model',
+      content,
+      timestamp: Date.now(),
+    };
+    setState(prev => ({
+      ...prev,
+      messages: [...prev.messages, botMessage],
+    }));
+  }, []);
+
   return {
     ...state,
     toggleChat,
     sendMessage,
+    addBotMessage,
   };
 }

@@ -8,9 +8,10 @@ import { authService } from '@/services/auth.service';
 interface ChatSignupFormProps {
   onSuccess?: () => void;
   onLoadingChange?: (loading: boolean) => void;
+  onBotMessage?: (message: string) => void;
 }
 
-export function ChatSignupForm({ onSuccess, onLoadingChange }: ChatSignupFormProps) {
+export function ChatSignupForm({ onSuccess, onLoadingChange, onBotMessage }: ChatSignupFormProps) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [academyName, setAcademyName] = useState('');
@@ -48,14 +49,29 @@ export function ChatSignupForm({ onSuccess, onLoadingChange }: ChatSignupFormPro
       });
 
       if (response && (response.success || response.id)) {
-        toast.success('Conta criada com sucesso! Faça login para começar.');
+        const successMsg = 'Conta criada com sucesso! Faça login no formulário correspondente ou solicite a ação para começar.';
+        if (onBotMessage) {
+          onBotMessage('✅ ' + successMsg);
+        } else {
+          toast.success(successMsg);
+        }
         if (onSuccess) onSuccess();
         router.push('/guest/login');
       } else {
-        toast.error(response?.message || 'Erro ao realizar cadastro.');
+        const errorMsg = response?.message || 'Erro ao realizar cadastro.';
+        if (onBotMessage) {
+          onBotMessage('❌ ' + errorMsg);
+        } else {
+          toast.error(errorMsg);
+        }
       }
     } catch (error: any) {
-      toast.error(error.message || 'Erro ao realizar cadastro');
+      const errorMsg = error.message || 'Erro ao realizar cadastro';
+      if (onBotMessage) {
+        onBotMessage('❌ ' + errorMsg);
+      } else {
+        toast.error(errorMsg);
+      }
     } finally {
       setIsLoading(false);
       onLoadingChange?.(false);

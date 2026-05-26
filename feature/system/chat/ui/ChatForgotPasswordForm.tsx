@@ -8,9 +8,10 @@ interface ChatForgotPasswordFormProps {
   /** Optional callback after successful request */
   onSuccess?: () => void;
   onLoadingChange?: (loading: boolean) => void;
+  onBotMessage?: (message: string) => void;
 }
 
-export function ChatForgotPasswordForm({ onSuccess, onLoadingChange }: ChatForgotPasswordFormProps) {
+export function ChatForgotPasswordForm({ onSuccess, onLoadingChange, onBotMessage }: ChatForgotPasswordFormProps) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,13 +28,20 @@ export function ChatForgotPasswordForm({ onSuccess, onLoadingChange }: ChatForgo
       // Assume authService.forgotPassword exists and returns a promise
       const response = await authService.forgotPassword(email);
       // Show generic success message to avoid leaking account existence
-      toast.success(
-        response?.message ||
-          'Se houver uma conta associada ao e‑mail, enviamos um link para redefinir a senha.'
-      );
+      const successMsg = response?.message || 'Se houver uma conta associada ao e‑mail, enviamos um link para redefinir a senha.';
+      if (onBotMessage) {
+        onBotMessage('✅ ' + successMsg);
+      } else {
+        toast.success(successMsg);
+      }
       if (onSuccess) onSuccess();
     } catch (error: any) {
-      toast.error(error?.message || 'Erro ao solicitar redefinição de senha');
+      const errorMsg = error?.message || 'Erro ao solicitar redefinição de senha';
+      if (onBotMessage) {
+        onBotMessage('❌ ' + errorMsg);
+      } else {
+        toast.error(errorMsg);
+      }
     } finally {
       setIsLoading(false);
       onLoadingChange?.(false);

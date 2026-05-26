@@ -143,31 +143,31 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
 
-      {/* Quick Replies */}
-      {messages.length <= 1 && !isLoading && (
-        <div className="px-4 pb-2 flex flex-col gap-2">
-          {[
-            'O que é a NexoraBJJ?',
-            'Você pode explicar?',
-            'Como funciona a plataforma?',
-          ].map((suggestion) => (
-            <motion.button
-              key={suggestion}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25 }}
-              onClick={() => {
-                onSendMessage(suggestion);
-              }}
-              className="w-full text-left text-[12px] text-gray-300 bg-[#18181B] border border-white/10 hover:border-[#E11D48]/50 hover:text-white hover:bg-[#1f1f1f] rounded-xl px-4 py-2.5 transition-all duration-200 cursor-pointer"
-            >
-              {suggestion}
-            </motion.button>
-          ))}
-        </div>
-      )}
+        {/* Quick Replies */}
+        {messages.length <= 1 && !isLoading && (
+          <div className="mt-4 flex flex-col gap-2">
+            {[
+              'O que é a NexoraBJJ?',
+              'Você pode explicar?',
+              'Como funciona a plataforma?',
+            ].map((suggestion) => (
+              <motion.button
+                key={suggestion}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25 }}
+                onClick={() => {
+                  onSendMessage(suggestion);
+                }}
+                className="w-full text-left text-[12px] text-gray-300 bg-[#18181B] border border-white/10 hover:border-[#E11D48]/50 hover:text-white hover:bg-[#1f1f1f] rounded-xl px-4 py-2.5 transition-all duration-200 cursor-pointer"
+              >
+                {suggestion}
+              </motion.button>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Input */}
       <form onSubmit={handleSubmit} className="p-4 bg-black/40 border-t border-white/5 backdrop-blur-md">

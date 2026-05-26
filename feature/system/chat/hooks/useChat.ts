@@ -7,13 +7,12 @@ import { useAuth } from '@/hooks/useAuth';
 export function useChat() {
   const { user } = useAuth();
   const sessionId = user?.id ? String(user.id) : 'guest_session';
-
   const [state, setState] = useState<ChatState>({
     messages: [
       {
         id: 'initial',
         role: 'model',
-        content: 'Olá! Sou o assistente da Nexora. Como posso ajudar você hoje?',
+        content: 'Olá! Eu sou a assistente da Nexora 👋 Estou aqui para ajudar você em toda a parte operacional do sistema. Você pode me dizer o que deseja fazer e eu posso te guiar passo a passo ou até executar parte do processo para você de forma automática. Dentro da plataforma, também consigo criar e organizar os campos necessários para as operações do seu sistema você só precisa preencher as informações que eu solicitar, e tudo será salvo automaticamente na Nexora.',
         timestamp: Date.now(),
       }
     ],

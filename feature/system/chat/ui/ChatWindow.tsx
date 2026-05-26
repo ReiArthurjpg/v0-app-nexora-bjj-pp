@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, User, Headset, Loader2 } from 'lucide-react';
+
 import { Message } from '../types/chat.types';
+import { Send, Headset, Maximize2, Minimize2, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import { ChatLoginForm } from './ChatLoginForm';
@@ -19,6 +20,7 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
   const [input, setInput] = useState('');
   const [currentMenu, setCurrentMenu] = useState<'main' | 'auth'>('main');
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -37,7 +39,7 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-40 md:bottom-28 right-6 z-50 w-[90vw] md:w-[400px] h-[500px] bg-[#0A0A0A]/85 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 duration-500">
+        <div className={isExpanded ? "fixed inset-0 z-50 w-full h-full bg-[#0A0A0A]/85 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 duration-500" : "fixed bottom-40 md:bottom-28 right-6 z-50 w-[90vw] md:w-[400px] h-[500px] bg-[#0A0A0A]/85 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 duration-500" }>
       <style dangerouslySetInnerHTML={{__html: `
         .chat-scrollbar::-webkit-scrollbar {
           width: 6px;
@@ -65,7 +67,10 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
             <Headset size={18} className="text-white" />
           </div>
           <div>
-            <h3 className="text-sm font-black uppercase tracking-wider text-white">Nexora <span className="text-[#E11D48]">Suporte</span></h3>
+                        <h3 className="text-sm font-black uppercase tracking-wider text-white">Nexora <span className="text-[#E11D48]">Suporte</span></h3>
+            <button onClick={() => setIsExpanded(prev => !prev)} className="absolute cursor-pointer top-2 right-2 p-1 text-white hover:bg-white/10 rounded" aria-label={isExpanded ? "Restore chat size" : "Expand chat"}>
+              {isExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+            </button>
             <div className="flex items-center gap-1.5 mt-0.5">
               <span className="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_rgba(16,185,129,0.6)] animate-pulse"></span>
               <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Online Agora</span>

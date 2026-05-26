@@ -17,6 +17,7 @@ interface ChatWindowProps {
 
 export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatWindowProps) {
   const [input, setInput] = useState('');
+  const [currentMenu, setCurrentMenu] = useState<'main' | 'auth'>('main');
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,6 +38,25 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
 
   return (
     <div className="fixed bottom-40 md:bottom-28 right-6 z-50 w-[90vw] md:w-[400px] h-[500px] bg-[#0A0A0A]/85 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 duration-500">
+      <style dangerouslySetInnerHTML={{__html: `
+        .chat-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .chat-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .chat-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.15) !important;
+          border-radius: 9999px;
+        }
+        .chat-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(225, 29, 72, 0.5) !important;
+        }
+        .chat-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+        }
+      `}} />
       {/* Header */}
       <div className="p-5 border-b border-white/5 bg-black/40 backdrop-blur-md relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#E11D48]/50 to-transparent"></div>
@@ -57,7 +77,7 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
       {/* Messages */}
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin scrollbar-thumb-white/10"
+        className="flex-1 overflow-y-auto p-6 space-y-6 chat-scrollbar scrollbar-thin scrollbar-thumb-white/10"
       >
         <AnimatePresence initial={false}>
           {messages.map((msg) => (
@@ -147,24 +167,48 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
         {/* Quick Replies */}
         {messages.length <= 1 && !isLoading && (
           <div className="mt-4 flex flex-col gap-2">
-            {[
-              'O que é a NexoraBJJ?',
-              'Você pode explicar?',
-              'Como funciona a plataforma?',
-            ].map((suggestion) => (
+            {currentMenu === 'main' ? (
               <motion.button
-                key={suggestion}
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25 }}
-                onClick={() => {
-                  onSendMessage(suggestion);
-                }}
-                className="w-full text-left text-[12px] text-gray-300 bg-[#18181B] border border-white/10 hover:border-[#E11D48]/50 hover:text-white hover:bg-[#1f1f1f] rounded-xl px-4 py-2.5 transition-all duration-200 cursor-pointer"
+                onClick={() => setCurrentMenu('auth')}
+                className="w-full text-left text-[12px] text-gray-300 bg-[#18181B] border border-white/10 hover:border-[#E11D48]/50 hover:text-white hover:bg-[#1f1f1f] rounded-xl px-4 py-2.5 transition-all duration-200 cursor-pointer flex items-center gap-2"
               >
-                {suggestion}
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E11D48]"></span>
+                Autenticação
               </motion.button>
-            ))}
+            ) : (
+              <>
+                {[
+                  'Quero realizar login',
+                  'Quero realizar cadastro',
+                  'Quero realizar reset de senha',
+                ].map((suggestion) => (
+                  <motion.button
+                    key={suggestion}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25 }}
+                    onClick={() => {
+                      onSendMessage(suggestion);
+                    }}
+                    className="w-full text-left text-[12px] text-gray-300 bg-[#18181B] border border-white/10 hover:border-[#E11D48]/50 hover:text-white hover:bg-[#1f1f1f] rounded-xl px-4 py-2.5 transition-all duration-200 cursor-pointer"
+                  >
+                    {suggestion}
+                  </motion.button>
+                ))}
+                <motion.button
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25 }}
+                  onClick={() => setCurrentMenu('main')}
+                  className="w-max text-left text-[11px] text-gray-400 hover:text-white mt-1 px-4 py-1.5 rounded-lg hover:bg-white/5 transition-all duration-200 cursor-pointer flex items-center gap-1.5"
+                >
+                  ← Voltar
+                </motion.button>
+              </>
+            )}
           </div>
         )}
       </div>

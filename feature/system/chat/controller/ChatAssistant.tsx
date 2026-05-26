@@ -19,7 +19,7 @@ export default function ChatAssistant() {
 
     const timer = setTimeout(() => {
       setShowNotification(true);
-    }, 300000); // 5 minutes
+    }, 1000000); // 5 minutes
 
     return () => clearTimeout(timer);
   }, [isOpen, resetTrigger]);

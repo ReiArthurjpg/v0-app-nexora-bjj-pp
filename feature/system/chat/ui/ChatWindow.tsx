@@ -9,6 +9,7 @@ import ReactMarkdown from 'react-markdown';
 import { ChatLoginForm } from './ChatLoginForm';
 import { ChatSignupForm } from './ChatSignupForm';
 import { ChatForgotPasswordForm } from './ChatForgotPasswordForm';
+
 interface ChatWindowProps {
   messages: Message[];
   isLoading: boolean;
@@ -21,6 +22,11 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
   const [currentMenu, setCurrentMenu] = useState<'main' | 'auth'>('main');
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isFormLoading, setIsFormLoading] = useState(false);
+
+  const handleFormLoadingChange = (loading: boolean) => {
+    setIsFormLoading(loading);
+  };
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -82,7 +88,7 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
       {/* Messages */}
       <div 
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-6 space-y-6 chat-scrollbar scrollbar-thin scrollbar-thumb-white/10"
+        className={`flex-1 overflow-y-auto p-6 space-y-6 chat-scrollbar scrollbar-thin scrollbar-thumb-white/10 transition-opacity duration-300 ${isFormLoading ? 'pointer-events-none opacity-50 cursor-not-allowed' : ''}`}
       >
         <AnimatePresence initial={false}>
           {messages.map((msg) => (
@@ -120,17 +126,17 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
                   
                   {msg.action === 'show_login_form' && (
                     <div className="mt-3">
-                      <ChatLoginForm onSuccess={() => console.log('Login success from chat')} />
+                      <ChatLoginForm onSuccess={() => console.log('Login success from chat')} onLoadingChange={handleFormLoadingChange} />
                     </div>
                   )}
                   {msg.action === 'show_signup_form' && (
                     <div className="mt-3">
-                      <ChatSignupForm onSuccess={() => console.log('Signup success from chat')} />
+                      <ChatSignupForm onSuccess={() => console.log('Signup success from chat')} onLoadingChange={handleFormLoadingChange} />
                     </div>
                   )}
                   {msg.action === 'show_forgot_password_form' && (
                     <div className="mt-3">
-                      <ChatForgotPasswordForm onSuccess={() => console.log('Forgot password success from chat')} />
+                      <ChatForgotPasswordForm onSuccess={() => console.log('Forgot password success from chat')} onLoadingChange={handleFormLoadingChange} />
                     </div>
                   )}
                 </div>
@@ -219,18 +225,19 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="p-4 bg-black/40 border-t border-white/5 backdrop-blur-md">
+      <form onSubmit={handleSubmit} className={`p-4 bg-black/40 border-t border-white/5 backdrop-blur-md transition-opacity duration-300 ${isFormLoading ? 'pointer-events-none opacity-50' : ''}`}>
         <div className="relative flex items-center">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Digite sua mensagem..."
-            className="w-full bg-[#18181B] border border-white/10 rounded-full pl-5 pr-12 py-3.5 text-[13px] text-white placeholder-gray-500 focus:outline-none focus:border-[#E11D48]/50 focus:ring-1 focus:ring-[#E11D48]/50 transition-all"
+            className="w-full bg-[#18181B] border border-white/10 rounded-full pl-5 pr-12 py-3.5 text-[13px] text-white placeholder-gray-500 focus:outline-none focus:border-[#E11D48]/50 focus:ring-1 focus:ring-[#E11D48]/50 transition-all disabled:opacity-50"
+            disabled={isFormLoading}
           />
           <button
             type="submit"
-            disabled={isLoading || !input.trim()}
+            disabled={isLoading || !input.trim() || isFormLoading}
             className="absolute right-2 p-2 bg-[#E11D48] text-white rounded-full hover:bg-[#BE123C] hover:scale-105 transition-all disabled:opacity-50 disabled:grayscale disabled:hover:scale-100 shadow-[0_0_10px_rgba(225,29,72,0.3)]"
           >
             <Send size={16} />

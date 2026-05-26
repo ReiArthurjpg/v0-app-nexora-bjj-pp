@@ -8,9 +8,10 @@ import { authService } from '@/services/auth.service';
 
 interface ChatLoginFormProps {
   onSuccess?: () => void;
+  onLoadingChange?: (loading: boolean) => void;
 }
 
-export function ChatLoginForm({ onSuccess }: ChatLoginFormProps) {
+export function ChatLoginForm({ onSuccess, onLoadingChange }: ChatLoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -25,6 +26,7 @@ export function ChatLoginForm({ onSuccess }: ChatLoginFormProps) {
     }
 
     setIsLoading(true);
+    onLoadingChange?.(true);
     try {
       const response = await authService.login({ email, password });
       if (response && response.accessToken) {
@@ -39,6 +41,7 @@ export function ChatLoginForm({ onSuccess }: ChatLoginFormProps) {
       toast.error(error.message || 'Erro ao realizar login');
     } finally {
       setIsLoading(false);
+      onLoadingChange?.(false);
     }
   };
 

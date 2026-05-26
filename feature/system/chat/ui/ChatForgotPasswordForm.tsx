@@ -7,9 +7,10 @@ import { authService } from '@/services/auth.service';
 interface ChatForgotPasswordFormProps {
   /** Optional callback after successful request */
   onSuccess?: () => void;
+  onLoadingChange?: (loading: boolean) => void;
 }
 
-export function ChatForgotPasswordForm({ onSuccess }: ChatForgotPasswordFormProps) {
+export function ChatForgotPasswordForm({ onSuccess, onLoadingChange }: ChatForgotPasswordFormProps) {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,6 +22,7 @@ export function ChatForgotPasswordForm({ onSuccess }: ChatForgotPasswordFormProp
     }
 
     setIsLoading(true);
+    onLoadingChange?.(true);
     try {
       // Assume authService.forgotPassword exists and returns a promise
       const response = await authService.forgotPassword(email);
@@ -34,6 +36,7 @@ export function ChatForgotPasswordForm({ onSuccess }: ChatForgotPasswordFormProp
       toast.error(error?.message || 'Erro ao solicitar redefinição de senha');
     } finally {
       setIsLoading(false);
+      onLoadingChange?.(false);
     }
   };
 

@@ -7,9 +7,10 @@ import { authService } from '@/services/auth.service';
 
 interface ChatSignupFormProps {
   onSuccess?: () => void;
+  onLoadingChange?: (loading: boolean) => void;
 }
 
-export function ChatSignupForm({ onSuccess }: ChatSignupFormProps) {
+export function ChatSignupForm({ onSuccess, onLoadingChange }: ChatSignupFormProps) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [academyName, setAcademyName] = useState('');
@@ -36,6 +37,7 @@ export function ChatSignupForm({ onSuccess }: ChatSignupFormProps) {
     }
 
     setIsLoading(true);
+    onLoadingChange?.(true);
     try {
       const response = await authService.signup({
         name,
@@ -56,6 +58,7 @@ export function ChatSignupForm({ onSuccess }: ChatSignupFormProps) {
       toast.error(error.message || 'Erro ao realizar cadastro');
     } finally {
       setIsLoading(false);
+      onLoadingChange?.(false);
     }
   };
 

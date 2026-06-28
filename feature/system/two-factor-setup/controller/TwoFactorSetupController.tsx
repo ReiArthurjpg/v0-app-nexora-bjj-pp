@@ -26,25 +26,7 @@ export function TwoFactorSetupController() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070708] text-white">
-      <div className="max-w-2xl mx-auto px-6 py-10">
-
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-[#E11D48]/10 rounded-lg flex items-center justify-center border border-[#E11D48]/20">
-              <Shield size={20} className="text-[#E11D48]" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-black uppercase italic tracking-tighter">
-                Autenticação <span className="text-[#E11D48]">2 Fatores</span>
-              </h1>
-              <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">
-                Configurações de segurança da conta
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="space-y-6 text-white">
 
         {/* ── STEP: IDLE (not enabled) ── */}
         {step === 'idle' && (
@@ -311,7 +293,6 @@ export function TwoFactorSetupController() {
             </div>
           </div>
         )}
-      </div>
     </div>
   );
 }

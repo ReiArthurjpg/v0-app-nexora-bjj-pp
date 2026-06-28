@@ -9,8 +9,7 @@ export function SystemSignupForm() {
   const { form, isSubmitting, showPassword, setShowPassword, onSubmit } = useSystemSignupForm();
 
   return (
-    <div className="min-h-screen bg-[#070708] text-white">
-      <div className="max-w-4xl mx-auto px-6 py-10">
+    <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-8 text-white">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-2">
@@ -51,12 +50,10 @@ export function SystemSignupForm() {
           />
         </div>
 
-        {/* Footer info */}
         <div className="mt-6 flex items-center gap-2 text-xs text-gray-600 font-bold uppercase tracking-widest">
           <Users size={12} />
           <span>Para ver todos os usuários, acesse a lista de membros.</span>
         </div>
-      </div>
     </div>
   );
 }

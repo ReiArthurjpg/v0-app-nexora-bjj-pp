@@ -6,7 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  transpilePackages: ['framer-motion'],
+  transpilePackages: ['framer-motion', 'react-markdown', 'remark-gfm'],
 }
 
 export default nextConfig

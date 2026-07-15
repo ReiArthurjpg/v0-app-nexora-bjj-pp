@@ -1,18 +1,144 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, User, Headset, Loader2 } from 'lucide-react';
-import { Message } from '../types/chat.types';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { Send, User, Headset, UserPlus, KeyRound } from 'lucide-react';
+import { Message, ChatAction } from '../types/chat.types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
+import { ChatLoginForm } from './ChatLoginForm';
 
+// ─── Action Card (para ações que não são formulários inline) ────────────────
+interface ActionCardProps {
+  action: ChatAction;
+  isAuthenticated: boolean;
+}
+
+function ActionCard({ action, isAuthenticated }: ActionCardProps) {
+  const router = useRouter();
+  if (!action) return null;
+
+  // show_login_form é tratado inline como ChatLoginForm — não renderiza botão aqui
+  if (action === 'show_login_form') return null;
+
+  const config: Record<
+    Exclude<NonNullable<ChatAction>, 'show_login_form'>,
+    { label: string; icon: React.ReactNode; href: string; gradient: string }
+  > = {
+    show_signup_form: {
+      label: isAuthenticated ? 'Abrir Formulário de Cadastro' : 'Faça Login Primeiro',
+      icon: isAuthenticated ? <UserPlus size={15} /> : <UserPlus size={15} />,
+      href: isAuthenticated ? '/hub/signup' : '/guest/login',
+      gradient: isAuthenticated
+        ? 'from-emerald-600 to-emerald-700'
+        : 'from-yellow-600 to-yellow-700',
+    },
+    show_forgot_password_form: {
+      label: 'Recuperar Senha',
+      icon: <KeyRound size={15} />,
+      href: '/guest/forgot-password',
+      gradient: 'from-purple-600 to-purple-700',
+    },
+  };
+
+  const { label, icon, href, gradient } = config[action as Exclude<NonNullable<ChatAction>, 'show_login_form'>];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, delay: 0.1 }}
+      className="mt-3 ml-11"
+    >
+      <button
+        onClick={() => router.push(href)}
+        className={`flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r ${gradient} text-white text-[12px] font-bold rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-lg`}
+      >
+        {icon}
+        {label}
+      </button>
+    </motion.div>
+  );
+}
+
+// ─── Markdown Renderer ───────────────────────────────────────────────────────
+function ChatMarkdown({ content }: { content: string }) {
+  return (
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm]}
+      components={{
+        p: ({ children }) => (
+          <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>
+        ),
+        strong: ({ children }) => (
+          <strong className="font-bold text-white">{children}</strong>
+        ),
+        em: ({ children }) => (
+          <em className="italic text-gray-300">{children}</em>
+        ),
+        a: ({ href, children }) => (
+          <a
+            href={href ?? '#'}
+            className="text-[#E11D48] hover:underline font-semibold"
+            target={href?.startsWith('http') ? '_blank' : '_self'}
+            rel="noopener noreferrer"
+          >
+            {children}
+          </a>
+        ),
+        ul: ({ children }) => (
+          <ul className="list-disc pl-4 space-y-1 my-2 text-gray-300">{children}</ul>
+        ),
+        ol: ({ children }) => (
+          <ol className="list-decimal pl-4 space-y-1 my-2 text-gray-300">{children}</ol>
+        ),
+        li: ({ children }) => (
+          <li className="leading-relaxed">{children}</li>
+        ),
+        blockquote: ({ children }) => (
+          <blockquote className="border-l-2 border-[#E11D48]/60 pl-3 my-2 text-gray-400 italic text-[12px]">
+            {children}
+          </blockquote>
+        ),
+        code: ({ children }) => (
+          <code className="bg-black/40 px-1.5 py-0.5 rounded text-[11px] font-mono text-[#E11D48]">
+            {children}
+          </code>
+        ),
+        h1: ({ children }) => (
+          <h1 className="text-base font-black text-white uppercase tracking-tight mb-2">{children}</h1>
+        ),
+        h2: ({ children }) => (
+          <h2 className="text-sm font-black text-white uppercase tracking-tight mb-2">{children}</h2>
+        ),
+        h3: ({ children }) => (
+          <h3 className="text-sm font-bold text-gray-200 mb-1">{children}</h3>
+        ),
+        hr: () => <hr className="border-white/10 my-3" />,
+      }}
+    >
+      {content}
+    </ReactMarkdown>
+  );
+}
+
+// ─── Chat Window ─────────────────────────────────────────────────────────────
 interface ChatWindowProps {
   messages: Message[];
   isLoading: boolean;
   isOpen: boolean;
+  isAuthenticated: boolean;
   onSendMessage: (content: string) => void;
 }
 
-export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatWindowProps) {
+export function ChatWindow({
+  messages,
+  isLoading,
+  isOpen,
+  isAuthenticated,
+  onSendMessage,
+}: ChatWindowProps) {
   const [input, setInput] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -34,57 +160,91 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
 
   return (
     <div className="fixed bottom-40 md:bottom-28 right-6 z-50 w-[90vw] md:w-[400px] h-[500px] bg-[#0A0A0A]/85 backdrop-blur-3xl border border-white/10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden animate-in slide-in-from-bottom-10 duration-500">
+
       {/* Header */}
       <div className="p-5 border-b border-white/5 bg-black/40 backdrop-blur-md relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#E11D48]/50 to-transparent"></div>
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#E11D48]/50 to-transparent" />
         <div className="flex items-center gap-3 relative z-10">
           <div className="w-10 h-10 bg-gradient-to-br from-[#E11D48] to-[#BE123C] rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(225,29,72,0.4)]">
             <Headset size={18} className="text-white" />
           </div>
           <div>
-            <h3 className="text-sm font-black uppercase tracking-wider text-white">Nexora <span className="text-[#E11D48]">Suporte</span></h3>
+            <h3 className="text-sm font-black uppercase tracking-wider text-white">
+              Nexora <span className="text-[#E11D48]">Suporte</span>
+            </h3>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_rgba(16,185,129,0.6)] animate-pulse"></span>
-              <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">Online Agora</span>
+              <span className="w-2 h-2 rounded-full bg-[#10B981] shadow-[0_0_8px_rgba(16,185,129,0.6)] animate-pulse" />
+              <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest">
+                Online Agora
+              </span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Messages */}
-      <div 
+      <div
         ref={scrollRef}
         className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin scrollbar-thumb-white/10"
       >
         <AnimatePresence initial={false}>
           {messages.map((msg) => (
-            <motion.div 
-              key={msg.id} 
+            <motion.div
+              key={msg.id}
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.3 }}
               className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div className={`flex gap-3 max-w-[85%] ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-md ${
-                  msg.role === 'user' 
-                    ? 'bg-white/10 text-white border border-white/5' 
-                    : 'bg-gradient-to-br from-[#18181B] to-[#0F0F10] border border-white/10'
-                }`}>
-                  {msg.role === 'user' ? <User size={14} /> : <Headset size={14} className="text-[#E11D48]" />}
+                {/* Avatar */}
+                <div
+                  className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 shadow-md ${
+                    msg.role === 'user'
+                      ? 'bg-white/10 text-white border border-white/5'
+                      : 'bg-gradient-to-br from-[#18181B] to-[#0F0F10] border border-white/10'
+                  }`}
+                >
+                  {msg.role === 'user' ? (
+                    <User size={14} />
+                  ) : (
+                    <Headset size={14} className="text-[#E11D48]" />
+                  )}
                 </div>
-                <div className={`p-4 text-[13px] leading-relaxed rounded-2xl shadow-sm ${
-                  msg.role === 'user' 
-                    ? 'bg-gradient-to-br from-[#E11D48] to-[#BE123C] text-white rounded-tr-sm' 
-                    : 'bg-[#18181B] text-gray-200 border border-white/5 rounded-tl-sm'
-                }`}>
-                  {msg.content}
+
+                {/* Bubble + Action */}
+                <div>
+                  <div
+                    className={`p-4 text-[13px] leading-relaxed rounded-2xl shadow-sm ${
+                      msg.role === 'user'
+                        ? 'bg-gradient-to-br from-[#E11D48] to-[#BE123C] text-white rounded-tr-sm'
+                        : 'bg-[#18181B] text-gray-200 border border-white/5 rounded-tl-sm'
+                    }`}
+                  >
+                    {msg.role === 'user' ? (
+                      msg.content
+                    ) : (
+                      <ChatMarkdown content={msg.content} />
+                    )}
+                  </div>
+
+                  {/* Formulário de login inline */}
+                  {msg.action === 'show_login_form' && (
+                    <ChatLoginForm />
+                  )}
+
+                  {/* Botão de ação para outras ações (signup, forgot-password) */}
+                  {msg.action && msg.action !== 'show_login_form' && (
+                    <ActionCard action={msg.action} isAuthenticated={isAuthenticated} />
+                  )}
                 </div>
               </div>
             </motion.div>
           ))}
+
+          {/* Loading indicator */}
           {isLoading && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="flex justify-start"
@@ -94,21 +254,14 @@ export function ChatWindow({ messages, isLoading, isOpen, onSendMessage }: ChatW
                   <Headset size={14} className="text-[#E11D48]" />
                 </div>
                 <div className="px-4 py-3.5 rounded-2xl bg-[#18181B] border border-white/5 rounded-tl-sm flex items-center gap-1.5 shadow-sm min-w-[60px] justify-center">
-                  <motion.div
-                    className="w-1.5 h-1.5 bg-[#E11D48] rounded-full shadow-[0_0_5px_rgba(225,29,72,0.8)]"
-                    animate={{ y: [0, -4, 0], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut", delay: 0 }}
-                  />
-                  <motion.div
-                    className="w-1.5 h-1.5 bg-[#E11D48] rounded-full shadow-[0_0_5px_rgba(225,29,72,0.8)]"
-                    animate={{ y: [0, -4, 0], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-                  />
-                  <motion.div
-                    className="w-1.5 h-1.5 bg-[#E11D48] rounded-full shadow-[0_0_5px_rgba(225,29,72,0.8)]"
-                    animate={{ y: [0, -4, 0], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-                  />
+                  {[0, 0.2, 0.4].map((delay, i) => (
+                    <motion.div
+                      key={i}
+                      className="w-1.5 h-1.5 bg-[#E11D48] rounded-full shadow-[0_0_5px_rgba(225,29,72,0.8)]"
+                      animate={{ y: [0, -4, 0], opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut', delay }}
+                    />
+                  ))}
                 </div>
               </div>
             </motion.div>

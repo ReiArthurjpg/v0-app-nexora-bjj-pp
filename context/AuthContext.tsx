@@ -10,7 +10,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  setSession: (token: string, user: User) => void;
+  setSession: (token: string, user: User | undefined, refreshToken?: string) => void;
   logout: () => void;
   signup: (data: any) => Promise<any>;
   updateProfile: (data: any) => Promise<any>;
@@ -26,16 +26,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     async function loadUser() {
-      // Check for token in URL (useful for Social Login redirect)
+      // Handle Google social login redirect token
       const params = new URLSearchParams(window.location.search);
       const urlToken = params.get('accessToken');
-      
+
       if (urlToken) {
         Cookies.set('nexora_token', urlToken, { expires: 1 });
-        // Clean up URL
         window.history.replaceState({}, document.title, window.location.pathname);
-        
-        // Success notification
         toast.success('Login social realizado com sucesso!');
         router.push('/hub');
       }
@@ -45,11 +42,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         try {
           const userData = await authService.me();
           if ((userData as any).code === 'INVALID_TOKEN' || !userData.id) {
-             throw new Error('Invalid token');
+            throw new Error('Invalid token');
           }
           setUser(userData);
-        } catch (error) {
+        } catch {
           Cookies.remove('nexora_token');
+          Cookies.remove('nexora_refresh');
           setUser(null);
         }
       }
@@ -58,9 +56,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     loadUser();
   }, [router]);
 
-  const setSession = (token: string, user: User) => {
+  const setSession = (token: string, userData: User | undefined, refreshToken?: string) => {
     Cookies.set('nexora_token', token, { expires: 1 });
-    setUser(user);
+    if (refreshToken) {
+      Cookies.set('nexora_refresh', refreshToken, { expires: 7 });
+    }
+    if (userData) {
+      setUser(userData);
+    }
   };
 
   const logout = () => {

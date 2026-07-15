@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
+import Cookies from 'js-cookie';
 import { useAuth } from '@/hooks/useAuth';
 import { loginSchema, LoginFormData } from '../../../schemas/login.schema';
 import { signinApi } from '../../../apis/signin.api';
@@ -36,9 +37,17 @@ export function useLoginForm() {
     setIsSubmitting(true);
     try {
       const result = await signinApi.login(data);
-      
-      if (result && result.accessToken) {
-        setSession(result.accessToken, result.user);
+
+      // Fluxo de 2FA: servidor retorna token temporário com scope '2fa'
+      if (result && result.requires_2fa && result.temp_token) {
+        Cookies.set('nexora_2fa_token', result.temp_token, { expires: 1 / 24 }); // 1 hora
+        toast.info('Código 2FA necessário. Verifique seu aplicativo autenticador.');
+        router.push('/guest/two-factor');
+        return;
+      }
+
+      if (result && result.accessToken && result.user) {
+        setSession(result.accessToken, result.user, result.refreshToken);
         toast.success('Login realizado com sucesso! Redirecionando...');
         router.push('/hub');
       } else {

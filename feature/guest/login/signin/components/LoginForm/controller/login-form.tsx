@@ -65,12 +65,12 @@ export function LoginForm() {
 
           <div className="mt-8 text-center">
             <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-              Não tem uma conta?{' '}
+              Problemas para acessar?{' '}
               <button
-                onClick={() => router.push('/guest/signup')}
+                onClick={() => router.push('/guest/forgot-password')}
                 className="cursor-pointer text-white hover:text-[#E11D48] ml-1 uppercase font-black italic transition-colors duration-200"
               >
-                Criar conta
+                Recuperar senha
               </button>
             </p>
           </div>

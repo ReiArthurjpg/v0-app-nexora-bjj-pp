@@ -31,7 +31,7 @@ export interface AuthResponse extends BaseResponse {
   tokenType: string;
   expiresIn: number;
   requires_2fa?: boolean;
-  temp_token?: string;
+  tempToken?: string;
   user: User;
 }
 
